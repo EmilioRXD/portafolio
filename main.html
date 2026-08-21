@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Simple - Fade Transition</title>
+    <style>
+        /* ========================
+           Variables CSS
+           ======================== */
+        :root {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --primary-color: #4CAF50;
+        }
+
+        /* ========================
+           Estilos Globales (CSS)
+           ======================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        body {
+            overflow: hidden;
+            /* Desactiva el scroll vertical y horizontal */
+            width: 100vw;
+            height: 100dvh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Navbar flotante */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 10px 20px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-btn:hover,
+        .nav-btn.active {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Configuración de los bloques */
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100dvh;
+        }
+
+        .bloque {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            z-index: 0;
+            padding: 20px;
+            background-color: transparent;
+            color: var(--text-color);
+        }
+
+        .bloque-content {
+            width: 100%;
+            max-width: 1024px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .bloque h1 {
+            font-size: 3rem;
+            color: var(--text-color);
+        }
+
+        .bloque.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            z-index: 1;
+        }
+
+        /* ========================
+           Bloque 1: Hero
+           ======================== */
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 24px;
+            text-align: left;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-color);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--text-color);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* ========================
+           Bloque 2: Sobre mí
+           ======================== */
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 18px;
+            text-align: left;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 45px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin-top: 6px;
+            border-radius: 2px;
+        }
+
+        .about-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #d1d5db;
+        }
+
+        /* ========================
+           Bloque 3: Proyectos
+           ======================== */
+        #bloque3 {
+            padding: 75px 2rem 1.5rem;
+            align-items: stretch;
+        }
+
+        .bloque-content-full {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            min-height: 0;
+        }
+
+        .projects-header {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Contenedor Superior: Carrusel de imágenes + Descripción */
+        .project-details-container {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 2rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.25rem;
+            padding: 1.75rem 2rem;
+            align-items: stretch;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Carrusel de Imágenes del proyecto */
+        .img-carousel {
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #141414;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            height: 100%;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .browser-bar {
+            flex-shrink: 0;
+            height: 2.4rem;
+            background: #202020;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            gap: 0.55rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .browser-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .browser-url {
+            margin-left: 0.75rem;
+            font-size: 0.82rem;
+            color: #999;
+            background: #121212;
+            padding: 0.2rem 0.8rem;
+            border-radius: 0.35rem;
+            width: 60%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .img-slides-track {
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 0;
+            background: #101010;
+        }
+
+        .img-slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: scale(0.97);
+            overflow: hidden;
+        }
+
+        .img-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 1;
+        }
+
+        .img-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: brightness(0.92);
+            transition: transform 0.6s ease;
+        }
+
+        .img-slide:hover img {
+            transform: scale(1.03);
+        }
+
+        .img-slide-caption {
+            position: absolute;
+            bottom: 1.2rem;
+            left: 1.2rem;
+            font-size: clamp(0.85rem, 2vh, 1.05rem);
+            font-weight: 600;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.72);
+            padding: 0.4rem 1.1rem;
+            border-radius: 1.5rem;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .img-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2.8rem;
+            height: 2.8rem;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            z-index: 2;
+            transition: all 0.25s ease;
+        }
+
+        .img-nav-btn:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .img-nav-btn.prev { left: 1rem; }
+        .img-nav-btn.next { right: 1rem; }
+
+        .img-indicators {
+            position: absolute;
+            bottom: 1rem;
+            display: flex;
+            gap: 0.6rem;
+            z-index: 2;
+        }
+
+        .img-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .img-dot.active {
+            background: var(--primary-color);
+            width: 24px;
+            border-radius: 5px;
+        }
+
+        /* Descripción con Scroll flexible */
+        .project-desc-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: left;
+            overflow: hidden;
+            height: 100%;
+            min-height: 0;
+            justify-content: space-between;
+        }
+
+        .desc-header {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.8rem;
+        }
+
+        .desc-title {
+            font-size: clamp(1.5rem, 3.5vh, 2.2rem);
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .desc-tag {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--primary-color);
+            background-color: rgba(76, 175, 80, 0.15);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            padding: 0.35rem 0.9rem;
+            border-radius: 1rem;
+            flex-shrink: 0;
+        }
+
+        .desc-scroll-box {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 0.75rem;
+            color: #d1d5db;
+            font-size: clamp(0.92rem, 1.8vh, 1.05rem);
+            line-height: 1.75;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) transparent;
+        }
+
+        /* Scrollbar discreto */
+        .desc-scroll-box::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .desc-scroll-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .desc-scroll-box::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .desc-footer {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding-top: 0.5rem;
+        }
+
+        .desc-tech {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .desc-tech span {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: #ccc;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.3rem 0.75rem;
+            border-radius: 0.4rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1.1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(76, 175, 80, 0.3);
+            white-space: nowrap;
+        }
+
+        .btn-project-link:hover {
+            background-color: #43a047;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(76, 175, 80, 0.45);
+        }
+
+        /* Carrusel Inferior de Selección de Proyectos (Centro siempre seleccionado) */
+        .carousel-selector-wrapper {
+            flex-shrink: 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .carousel-nav-btn {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-color);
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+
+        .carousel-nav-btn:hover:not(:disabled) {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #ffffff;
+            transform: scale(1.08);
+        }
+
+        .carousel-nav-btn:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 0.6rem 0;
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 1.5rem;
+            transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: transform;
+        }
+
+        .project-card {
+            flex: 0 0 calc((100% - 3rem) / 3);
+            background-color: #222222;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0.9rem;
+            padding: 1rem 1.3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            text-align: left;
+            cursor: pointer;
+            opacity: 0.45;
+            transform: scale(0.92);
+            transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                        transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                        border-color 0.4s ease,
+                        background-color 0.4s ease,
+                        box-shadow 0.4s ease;
+            user-select: none;
+        }
+
+        .project-card.active-center {
+            opacity: 1;
+            transform: scale(1.04);
+            border-color: var(--primary-color);
+            background-color: #282828;
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.35);
+            cursor: default;
+        }
+
+        .project-card:hover:not(.active-center) {
+            opacity: 0.8;
+            transform: scale(0.97);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .project-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-tag {
+            font-size: 0.74rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary-color);
+            background-color: rgba(76, 175, 80, 0.15);
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.75rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.15rem;
+            color: var(--text-color);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .project-card p {
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            line-height: 1.4;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ========================
+           Mobile Article View (solo visible en mobile)
+           ======================== */
+        .mobile-article-view {
+            display: none; /* oculto en desktop/tablet */
+            flex-direction: column;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .article-tag-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary-color);
+            background-color: rgba(76, 175, 80, 0.15);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            padding: 0.2rem 0.65rem;
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin: 0 0 0.85rem 0;
+            line-height: 1.25;
+        }
+
+        .article-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 0.75rem;
+            display: block;
+            margin: 0.85rem 0;
+        }
+
+        .article-img:first-of-type {
+            margin-top: 0;
+        }
+
+        .article-para {
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: #d1d5db;
+            margin: 0 0 0.85rem 0;
+        }
+
+        .article-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin: 0.75rem 0;
+        }
+
+        .article-tech span {
+            font-size: 0.72rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e2e8f0;
+            padding: 0.2rem 0.55rem;
+            border-radius: 0.4rem;
+        }
+
+        .article-link {
+            display: inline-block;
+            margin-top: 0.25rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem 1.1rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            border: 1.5px solid var(--primary-color);
+            border-radius: 0.45rem;
+            text-decoration: none;
+            transition: background 0.25s, color 0.25s;
+        }
+
+        .article-link:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
+
+        /* ========================
+           Media Queries (Responsive)
+           ======================== */
+        @media (max-width: 1024px) {
+            .project-details-container {
+                gap: 1.25rem;
+                padding: 1.25rem 1.5rem;
+            }
+
+            .carousel-track {
+                gap: 1rem;
+            }
+
+            .project-card {
+                flex: 0 0 calc((100% - 2rem) / 3);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                height: 55px;
+                gap: 5px;
+            }
+
+            .nav-btn {
+                font-size: 0.85rem;
+                padding: 8px 10px;
+            }
+
+            .bloque-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content {
+                align-items: center;
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 2.3rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .about-content {
+                align-items: center;
+                text-align: center;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .section-title::after {
+                margin: 6px auto 0 auto;
+       
+            /* Adaptación móvil del Bloque 3: artículo scrolleable + carrusel selector abajo */
+            #bloque3 {
+                padding: 60px 0.75rem 0.75rem;
+            }
+
+            .bloque-content-full {
+                gap: 0.5rem;
+                height: 100%;
+            }
+
+            /* Contenedor convierte en flex-column; el artículo ocupa todo el espacio */
+            .project-details-container {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                backdrop-filter: none;
+                border-radius: 0;
+                flex: 1;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Ocultar vistas de desktop en mobile */
+            .img-carousel,
+            .project-desc-wrapper {
+                display: none !important;
+            }
+
+            /* Mostrar y activar el artículo scrolleable */
+            .mobile-article-view {
+                display: flex;
+                flex: 1;
+                min-height: 0;
+                overflow-y: auto;
+                padding: 0.85rem;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 0.85rem;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+                scrollbar-width: thin;
+                scrollbar-color: var(--primary-color) transparent;
+            }
+
+            .mobile-article-view::-webkit-scrollbar { width: 4px; }
+            .mobile-article-view::-webkit-scrollbar-track { background: transparent; }
+            .mobile-article-view::-webkit-scrollbar-thumb {
+                background: var(--primary-color);
+                border-radius: 4px;
+            }
+
+            .img-dot.active {
+                width: 16px;
+            }
+
+            /* Descripción compacta y pegada a la imagen */
+            .project-desc-wrapper {
+                flex: 1;
+                min-height: 0;
+                height: auto;
+                justify-content: flex-start;
+                gap: 0.3rem;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .desc-header {
+                padding-bottom: 0.2rem;
+                gap: 0.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            }
+
+            .desc-title {
+                font-size: 1.15rem;
+                line-height: 1.2;
+            }
+
+            .desc-tag {
+                font-size: 0.68rem;
+                padding: 0.15rem 0.5rem;
+            }
+
+            .desc-scroll-box {
+                font-size: 0.82rem;
+                line-height: 1.45;
+                flex: 1;
+                min-height: 0;
+                padding-right: 0.4rem;
+            }
+
+            .desc-footer {
+                margin-top: auto;
+                padding-top: 0.25rem;
+                gap: 0.4rem;
+            }
+
+            .desc-tech {
+                gap: 0.35rem;
+            }
+
+            .desc-tech span {
+                font-size: 0.7rem;
+                padding: 0.15rem 0.45rem;
+            }
+
+            .btn-project-link {
+                font-size: 0.75rem;
+                padding: 0.28rem 0.65rem;
+                border-radius: 0.35rem;
+            }
+
+            /* Carrusel inferior de proyectos */
+            .carousel-selector-wrapper {
+                gap: 0.4rem;
+            }
+
+            .carousel-nav-btn {
+                width: 2.2rem;
+                height: 2.2rem;
+                font-size: 0.95rem;
+            }
+
+            .carousel-track {
+                gap: 0.6rem;
+            }
+
+            .project-card {
+                flex: 0 0 calc((100% - 0.6rem) / 2);
+                padding: 0.65rem 0.85rem;
+                border-radius: 0.65rem;
+                gap: 0.25rem;
+            }
+
+            .project-card h3 {
+                font-size: 0.95rem;
+            }
+
+            .project-card p {
+                font-size: 0.75rem;
+                line-height: 1.3;
+            }
+
+            .bloque h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-btn {
+                font-size: 0.8rem;
+                padding: 6px 8px;
+            }
+
+            .hero-title {
+                font-size: 1.9rem;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .about-text {
+                font-size: 0.9rem;
+            }
+
+            #bloque3 {
+                padding: 55px 0.5rem 0.5rem;
+            }
+
+            .mobile-article-view {
+                padding: 0.65rem;
+            }
+
+            .article-title {
+                font-size: 1.15rem;
+            }
+
+            .project-card {
+                flex: 0 0 85%;
+            }
+
+            .bloque h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Menú de Navegación -->
+    <nav class="navbar">
+        <button class="nav-btn active" data-target="bloque1">Inicio</button>
+        <button class="nav-btn" data-target="bloque2">Sobre mí</button>
+        <button class="nav-btn" data-target="bloque3">Proyectos</button>
+    </nav>
+
+    <!-- Contenedor de Bloques -->
+    <div class="container">
+        <section id="bloque1" class="bloque active">
+            <div class="bloque-content">
+                <div class="columna hero-content">
+                    <h1 class="hero-title">Jesus Rodriguez</h1>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" data-target="bloque2">Sobre mí</button>
+                        <button class="btn btn-outline" data-target="bloque3">Proyectos</button>
+                    </div>
+                </div>
+                <div class="columna"></div>
+            </div>
+        </section>
+
+        <section id="bloque2" class="bloque">
+            <div class="bloque-content">
+                <div class="columna about-content">
+                    <h2 class="section-title">Sobre mí</h2>
+                    <p class="about-text">
+                        ¡Hola! Soy Jesús Rodríguez, un desarrollador apasionado por crear experiencias digitales modernas, rápidas e intuitivas.
+                    </p>
+                    <p class="about-text">
+                        Me enfoco en el diseño limpio, la optimización y la implementación de soluciones web efectivas, combinando tecnología y creatividad para dar vida a proyectos únicos.
+                    </p>
+                </div>
+                <div class="columna"></div>
+            </div>
+        </section>
+
+        <section id="bloque3" class="bloque">
+            <div class="bloque-content-full">
+                <div class="projects-header">
+                    <h2 class="section-title">Proyectos</h2>
+                </div>
+
+                <!-- Parte Superior: Carrusel de Imágenes + Descripción Scrolleable (Desktop/Tablet) -->
+                <div class="project-details-container">
+                    <!-- Carrusel de imágenes del proyecto seleccionado -->
+                    <div class="img-carousel">
+                        <div class="browser-bar">
+                            <span class="browser-dot dot-red"></span>
+                            <span class="browser-dot dot-yellow"></span>
+                            <span class="browser-dot dot-green"></span>
+                            <div class="browser-url" id="browserUrl">https://proyecto.dev/preview</div>
+                        </div>
+                        <div class="img-slides-track" id="imgSlidesTrack">
+                            <!-- Slides generados dinámicamente -->
+                        </div>
+                        <button class="img-nav-btn prev" id="imgPrevBtn" aria-label="Imagen anterior">&#10094;</button>
+                        <button class="img-nav-btn next" id="imgNextBtn" aria-label="Imagen siguiente">&#10095;</button>
+                        <div class="img-indicators" id="imgIndicators"></div>
+                    </div>
+
+                    <!-- Descripción del proyecto con scroll (Desktop/Tablet) -->
+                    <div class="project-desc-wrapper">
+                        <div class="desc-header">
+                            <h3 class="desc-title" id="detailTitle">Título del Proyecto</h3>
+                            <span class="desc-tag" id="detailTag">Tag</span>
+                        </div>
+                        <div class="desc-scroll-box" id="detailDesc">
+                            Descripción detallada del proyecto...
+                        </div>
+                        <div class="desc-footer">
+                            <div class="desc-tech" id="detailTech">
+                                <!-- Badges de tecnologías -->
+                            </div>
+                            <a href="#" class="btn-project-link" id="detailLink" target="_blank">Ver Proyecto ↗</a>
+                        </div>
+                    </div>
+
+                    <!-- Vista artículo (solo Mobile) -->
+                    <div class="mobile-article-view" id="mobileArticleView">
+                        <!-- Generado dinámicamente por JS -->
+                    </div>
+                </div>
+
+                <!-- Parte Inferior: Carrusel Selector de Proyectos (Elemento del centro siempre seleccionado) -->
+                <div class="carousel-selector-wrapper">
+                    <button class="carousel-nav-btn" id="prevProjectBtn" aria-label="Proyecto anterior">&#10094;</button>
+                    
+                    <div class="carousel-container" id="carouselContainer">
+                        <div class="carousel-track" id="carouselTrack">
+                            <!-- Tarjetas generadas dinámicamente -->
+                        </div>
+                    </div>
+
+                    <button class="carousel-nav-btn" id="nextProjectBtn" aria-label="Proyecto siguiente">&#10095;</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========================
+         Lógica Funcional (JS)
+         ======================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Datos de los proyectos con galería de fotos reales
+            const projects = [
+                {
+                    id: 0,
+                    title: "Proyecto Alfa",
+                    tag: "Web App",
+                    url: "https://proyectoalfa.dev",
+                    shortDesc: "Plataforma interactiva desarrollada con tecnologías web modernas.",
+                    fullDesc: "Proyecto Alfa es una plataforma interactiva de productividad empresarial construida con tecnologías web de vanguardia. Nació como respuesta a la necesidad de equipos distribuidos que requieren colaboración en tiempo real sin depender de herramientas de terceros costosas.\n\nSu arquitectura está basada en componentes atómicos reutilizables, lo que permite escalar la interfaz de forma modular sin afectar el rendimiento global. Cada módulo es completamente independiente y puede ser desplegado por separado usando estrategias de micro-frontends.\n\nLa capa de comunicación utiliza WebSockets con reconexión automática y colas de mensajes offline, garantizando que ninguna acción del usuario se pierda incluso en conexiones inestables. Los datos se sincronizan mediante un sistema de resolución de conflictos CRDT (Conflict-free Replicated Data Types), técnica utilizada en herramientas como Figma y Notion.\n\nEl sistema incluye un motor de permisos granular basado en roles (RBAC), autenticación multifactor, auditoría de eventos completa y encriptación end-to-end de datos sensibles. La plataforma fue sometida a pruebas de carga con más de 10,000 usuarios concurrentes sin degradación de rendimiento.",
+                    tech: ["HTML5", "CSS3", "JavaScript", "WebSocket"],
+                    images: [
+                        { label: "Dashboard & Métricas", src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80" },
+                        { label: "Diseño de Interfaz", src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80" },
+                        { label: "Desarrollo y Código", src: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=1200&q=80" }
+                    ]
+                },
+                {
+                    id: 1,
+                    title: "Tienda Online",
+                    tag: "E-Commerce",
+                    url: "https://shopmarket.dev",
+                    shortDesc: "Catálogo de productos optimizado con carrito y pasarela de pago.",
+                    fullDesc: "Esta solución de comercio electrónico fue diseñada desde cero para soportar catálogos de miles de productos con rendimiento óptimo incluso en dispositivos de gama baja. La arquitectura utiliza React con lazy loading de componentes, reduciendo el tiempo de carga inicial a menos de 1.2 segundos en conexiones 3G.\n\nLa integración con Stripe y PayPal incluye soporte para pagos en cuotas, suscripciones recurrentes y múltiples monedas con conversión automática en tiempo real. El carrito de compras se persiste en localStorage y se sincroniza con el servidor cuando el usuario inicia sesión, evitando pérdidas de sesión.\n\nEl sistema de búsqueda y filtrado utiliza índices invertidos optimizados con Elasticsearch, ofreciendo resultados relevantes en menos de 50ms incluso con filtros combinados de precio, categoría, valoración y disponibilidad.\n\nEl panel administrativo permite gestionar órdenes, actualizar inventario en lotes mediante importación CSV, configurar descuentos automáticos y visualizar métricas de ventas con gráficos en tiempo real. Todo el sistema está completamente dockerizado y desplegado en AWS con balanceo de carga automático.",
+                    tech: ["React", "Node.js", "Stripe", "Express"],
+                    images: [
+                        { label: "Catálogo de Productos", src: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=1200&q=80" },
+                        { label: "Checkout Seguro", src: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=1200&q=80" },
+                        { label: "Panel de Ventas", src: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" }
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Panel Analytics",
+                    tag: "Dashboard",
+                    url: "https://metricsdash.dev",
+                    shortDesc: "Panel de administración con métricas y gráficos interactivos.",
+                    fullDesc: "Panel Analytics es una plataforma de Business Intelligence diseñada para transformar datos en bruto en decisiones estratégicas. Su motor de procesamiento puede ingerir hasta 5 millones de eventos por hora sin degradar la experiencia del usuario en el dashboard.\n\nLos gráficos están construidos sobre Chart.js con una capa de abstracción personalizada que permite cambiar el tipo de visualización dinámicamente sin perder el estado de los filtros activos. Incluye más de 20 tipos de gráficos: líneas, barras apiladas, mapas de calor, scatter plots, sankey diagrams y gráficos geoespaciales.\n\nEl sistema de alertas utiliza umbrales configurables con soporte para condiciones compuestas (AND/OR) y puede notificar vía email, Slack, SMS o webhooks personalizados cuando una métrica supera o cae por debajo del valor definido.\n\nLa exportación de reportes genera PDFs con diseño profesional usando Puppeteer en el servidor, y hojas Excel con múltiples pestañas y gráficos embebidos. Los reportes pueden programarse para enviarse automáticamente cada día, semana o mes a los destinatarios configurados.",
+                    tech: ["Vue.js", "Chart.js", "Tailwind", "REST API"],
+                    images: [
+                        { label: "Gráficos de Crecimiento", src: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80" },
+                        { label: "Métricas Financieras", src: "https://images.unsplash.com/photo-1543286386-713bdd548da4?auto=format&fit=crop&w=1200&q=80" },
+                        { label: "Reportes en Tiempo Real", src: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=1200&q=80" }
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "App Móvil UX",
+                    tag: "UI / UX",
+                    url: "https://mobileflow.dev",
+                    shortDesc: "Diseño y desarrollo mobile-first enfocado en usabilidad.",
+                    fullDesc: "MobileFlow nació de la observación de que el 70% de los usuarios abandona una app en las primeras 48 horas si la experiencia táctil no es perfecta. Esta plataforma fue diseñada para eliminar ese problema desde la raíz, utilizando principios de diseño atómico que garantizan consistencia visual en cada pantalla.\n\nTodas las animaciones corren a 60fps nativos gracias al uso exclusivo de propiedades que no disparan el layout engine: transform y opacity. Se evitaron deliberadamente propiedades como width, height, top y left en las transiciones, eliminando el jank de animación en dispositivos de gama media.\n\nEl soporte offline está implementado con Service Workers y una estrategia cache-first para recursos estáticos y network-first para datos dinámicos. El usuario puede navegar y realizar acciones sin conexión, que se sincronizan automáticamente al reconectarse usando una cola de operaciones pendientes.\n\nLas notificaciones push están integradas con Firebase Cloud Messaging y segmentadas por comportamiento del usuario: horario de actividad, funcionalidades más usadas y etapa del funnel de conversión. Esto resultó en un aumento del 40% en la tasa de retención a 30 días respecto a notificaciones genéricas.",
+                    tech: ["Figma", "CSS Grid", "PWAs", "Mobile First"],
+                    images: [
+                        { label: "Experiencia Mobile First", src: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80" },
+                        { label: "Flujos de Interacción", src: "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?auto=format&fit=crop&w=1200&q=80" },
+                        { label: "Prototipos UI / UX", src: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=1200&q=80" }
+                    ]
+                },
+                {
+                    id: 4,
+                    title: "Backend Core",
+                    tag: "API REST",
+                    url: "https://apicore.dev/docs",
+                    shortDesc: "Microservicios escalables y arquitectura de datos segura.",
+                    fullDesc: "Backend Core es una infraestructura de microservicios diseñada para soportar aplicaciones críticas con requisitos de alta disponibilidad (99.99% uptime). Cada servicio es independiente, desplegable por separado y se comunica mediante eventos asíncronos a través de Apache Kafka.\n\nLa autenticación implementa el estándar OAuth 2.0 con flujos de Authorization Code, Client Credentials y Device Authorization. Los tokens JWT tienen vida corta (15 minutos) y se renuevan mediante refresh tokens con rotación automática, eliminando la necesidad de cerrar sesión y protegiendo ante robos de token.\n\nEl rate-limiting opera en dos capas: a nivel de gateway con Nginx (límite de IPs) y a nivel de aplicación con Redis (límite por usuario/API key). Ambas capas se configuran dinámicamente sin reinicio del servicio, permitiendo ajustar límites en tiempo real ante ataques DDoS.\n\nLa documentación Swagger se genera automáticamente desde los decoradores del código usando swagger-jsdoc, garantizando que siempre esté sincronizada con la implementación real. Incluye ejemplos de request/response, códigos de error documentados y un playground interactivo para probar endpoints desde el navegador.",
+                    tech: ["Node.js", "Express", "Docker", "PostgreSQL"],
+                    images: [
+                        { label: "Infraestructura en la Nube", src: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" },
+                        { label: "Seguridad y API REST", src: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" },
+                        { label: "Bases de Datos y Redes", src: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" }
+                    ]
+                }
+            ];
+
+            let selectedIndex = 1; // Comenzar con el proyecto 2 (índice 1) seleccionado en el centro
+            let currentImageIndex = 0;
+
+            const carouselTrack = document.getElementById('carouselTrack');
+            const carouselContainer = document.getElementById('carouselContainer');
+            const prevProjectBtn = document.getElementById('prevProjectBtn');
+            const nextProjectBtn = document.getElementById('nextProjectBtn');
+
+            const imgSlidesTrack = document.getElementById('imgSlidesTrack');
+            const imgIndicators = document.getElementById('imgIndicators');
+            const imgPrevBtn = document.getElementById('imgPrevBtn');
+            const imgNextBtn = document.getElementById('imgNextBtn');
+            const browserUrl = document.getElementById('browserUrl');
+
+            const detailTitle = document.getElementById('detailTitle');
+            const detailTag = document.getElementById('detailTag');
+            const detailDesc = document.getElementById('detailDesc');
+            const detailTech = document.getElementById('detailTech');
+            const detailLink = document.getElementById('detailLink');
+
+            // Renderizar tarjetas del carrusel inferior
+            function renderProjectCards() {
+                carouselTrack.innerHTML = '';
+                projects.forEach((proj, idx) => {
+                    const card = document.createElement('div');
+                    card.className = `project-card ${idx === selectedIndex ? 'active-center' : ''}`;
+                    card.dataset.index = idx;
+                    card.innerHTML = `
+                        <div class="project-card-header">
+                            <span class="project-tag">${proj.tag}</span>
+                        </div>
+                        <h3>${proj.title}</h3>
+                        <p>${proj.shortDesc}</p>
+                    `;
+                    card.addEventListener('click', () => {
+                        if (selectedIndex !== idx) {
+                            selectedIndex = idx;
+                            currentImageIndex = 0;
+                            updateAll();
+                        }
+                    });
+                    carouselTrack.appendChild(card);
+                });
+            }
+
+            // Actualizar vista de imágenes superiores con fotos reales
+            function updateTopImageCarousel() {
+                const proj = projects[selectedIndex];
+                browserUrl.textContent = proj.url;
+                imgSlidesTrack.innerHTML = '';
+                imgIndicators.innerHTML = '';
+
+                proj.images.forEach((img, idx) => {
+                    // Slide con foto real
+                    const slide = document.createElement('div');
+                    slide.className = `img-slide ${idx === currentImageIndex ? 'active' : ''}`;
+                    slide.innerHTML = `
+                        <img src="${img.src}" alt="${img.label}" loading="lazy">
+                        <div class="img-slide-caption">${img.label}</div>
+                    `;
+                    imgSlidesTrack.appendChild(slide);
+
+                    // Indicador punto
+                    const dot = document.createElement('div');
+                    dot.className = `img-dot ${idx === currentImageIndex ? 'active' : ''}`;
+                    dot.addEventListener('click', () => {
+                        currentImageIndex = idx;
+                        updateTopImageCarousel();
+                    });
+                    imgIndicators.appendChild(dot);
+                });
+            }
+
+            // Actualizar panel de descripción
+            function updateDescriptionPanel() {
+                const proj = projects[selectedIndex];
+                detailTitle.textContent = proj.title;
+                detailTag.textContent = proj.tag;
+                detailDesc.innerHTML = proj.fullDesc
+                    .split('\n\n')
+                    .map(p => `<p style="margin:0 0 0.75em 0">${p}</p>`)
+                    .join('');
+                detailDesc.scrollTop = 0; // Reset scroll al inicio
+                if (detailLink) {
+                    detailLink.href = proj.url;
+                }
+
+                detailTech.innerHTML = '';
+                proj.tech.forEach(t => {
+                    const span = document.createElement('span');
+                    span.textContent = t;
+                    detailTech.appendChild(span);
+                });
+            }
+
+            // Centrar el elemento seleccionado en el carrusel inferior
+            function updateBottomCarousel() {
+                const cards = document.querySelectorAll('.project-card');
+                if (cards.length === 0) return;
+
+                cards.forEach((card, idx) => {
+                    if (idx === selectedIndex) {
+                        card.classList.add('active-center');
+                    } else {
+                        card.classList.remove('active-center');
+                    }
+                });
+
+                const containerWidth = carouselContainer.offsetWidth;
+                const selectedCard = cards[selectedIndex];
+                const cardWidth = selectedCard.offsetWidth;
+                
+                // Medir el gap computado real (soporta rem, px y media queries dinámicas)
+                const computedStyle = window.getComputedStyle(carouselTrack);
+                const gap = parseFloat(computedStyle.gap) || parseFloat(computedStyle.columnGap) || 20;
+
+                // Cálculo exacto para centrar la tarjeta seleccionada
+                const cardCenterOffset = selectedIndex * (cardWidth + gap) + (cardWidth / 2);
+                const trackTranslateX = (containerWidth / 2) - cardCenterOffset;
+
+                carouselTrack.style.transform = `translateX(${trackTranslateX}px)`;
+
+                // Actualizar estado de botones de navegación
+                prevProjectBtn.disabled = selectedIndex === 0;
+                nextProjectBtn.disabled = selectedIndex === projects.length - 1;
+            }
+
+            // Construir el artículo scrolleable para mobile
+            function updateMobileArticle() {
+                const mobileArticle = document.getElementById('mobileArticleView');
+                if (!mobileArticle) return;
+
+                const proj = projects[selectedIndex];
+                const paragraphs = proj.fullDesc.split('\n\n');
+
+                let html = '';
+
+                // Tag + título
+                html += `<span class="article-tag-label">${proj.tag}</span>`;
+                html += `<h2 class="article-title">${proj.title}</h2>`;
+
+                // Intercalar imagen → párrafo → imagen → párrafo...
+                const totalItems = Math.max(proj.images.length, paragraphs.length);
+                for (let i = 0; i < totalItems; i++) {
+                    if (proj.images[i]) {
+                        html += `<img class="article-img" src="${proj.images[i].src}" alt="${proj.images[i].label}" loading="lazy">`;
+                    }
+                    if (paragraphs[i]) {
+                        html += `<p class="article-para">${paragraphs[i]}</p>`;
+                    }
+                }
+
+                // Tecnologías
+                html += `<div class="article-tech">${proj.tech.map(t => `<span>${t}</span>`).join('')}</div>`;
+
+                // Enlace
+                html += `<a class="article-link" href="${proj.url}" target="_blank">Ver Proyecto ↗</a>`;
+
+                mobileArticle.innerHTML = html;
+                mobileArticle.scrollTop = 0;
+            }
+
+            function updateAll() {
+                updateTopImageCarousel();
+                updateDescriptionPanel();
+                updateMobileArticle();
+                updateBottomCarousel();
+            }
+
+            // Eventos del carrusel de imágenes
+            imgPrevBtn.addEventListener('click', () => {
+                const proj = projects[selectedIndex];
+                currentImageIndex = (currentImageIndex - 1 + proj.images.length) % proj.images.length;
+                updateTopImageCarousel();
+            });
+
+            imgNextBtn.addEventListener('click', () => {
+                const proj = projects[selectedIndex];
+                currentImageIndex = (currentImageIndex + 1) % proj.images.length;
+                updateTopImageCarousel();
+            });
+
+            // Eventos del carrusel de proyectos
+            prevProjectBtn.addEventListener('click', () => {
+                if (selectedIndex > 0) {
+                    selectedIndex--;
+                    currentImageIndex = 0;
+                    updateAll();
+                }
+            });
+
+            nextProjectBtn.addEventListener('click', () => {
+                if (selectedIndex < projects.length - 1) {
+                    selectedIndex++;
+                    currentImageIndex = 0;
+                    updateAll();
+                }
+            });
+
+            window.addEventListener('resize', updateBottomCarousel);
+
+            // Manejo de navegación global entre bloques
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const targetButtons = document.querySelectorAll('[data-target]');
+            const bloques = document.querySelectorAll('.bloque');
+
+            function navigateTo(targetId) {
+                bloques.forEach(bloque => bloque.classList.remove('active'));
+                navButtons.forEach(btn => btn.classList.remove('active'));
+
+                const targetBloque = document.getElementById(targetId);
+                if (targetBloque) {
+                    targetBloque.classList.add('active');
+                }
+
+                const matchingNavBtn = document.querySelector(`.nav-btn[data-target="${targetId}"]`);
+                if (matchingNavBtn) {
+                    matchingNavBtn.classList.add('active');
+                }
+
+                if (targetId === 'bloque3') {
+                    setTimeout(updateAll, 50);
+                }
+            }
+
+            targetButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-target');
+                    if (targetId) {
+                        navigateTo(targetId);
+                    }
+                });
+            });
+
+            // Inicialización
+            renderProjectCards();
+            updateAll();
+        });
+    </script>
+</body>
+
+</html>
