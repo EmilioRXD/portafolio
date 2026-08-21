@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Slider · Navbar + 3 bloques fullscreen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,500;14..32,600&display=swap"
+        rel="stylesheet" />
+    <style>
+        /* Reset total */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            touch-action: none;
+            background: #0b0e14;
+            font-family: 'Inter', sans-serif;
+            color: #f0f4ff;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Contenedor principal: ocupa toda la pantalla, sin desbordar */
+        .viewport {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            /* fallback */
+            height: 100dvh;
+            /* para móviles modernos */
+            overflow: hidden;
+            background: #0b0e14;
+            /* color de fondo por si acaso */
+            z-index: 1;
+        }
+
+        /* El slider interno: 3 veces el ancho, se mueve con translateX */
+        .slides-track {
+            display: flex;
+            flex-wrap: nowrap;
+            width: 300%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+            transform: translateX(0%);
+            background: #0b0e14;
+        }
+
+        /* Cada bloque ocupa exactamente 1/3 del track, es decir, 100% del viewport */
+        .block {
+            flex: 0 0 33.3333%;
+            /* 100% del viewport */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Colores diferenciados */
+        .block-1 {
+            background: linear-gradient(145deg, #0f172a, #1e293b);
+        }
+
+        .block-2 {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+        }
+
+        .block-3 {
+            background: linear-gradient(145deg, #0f1a2c, #1b2a3f);
+        }
+
+        /* Tipografía */
+        .block h2 {
+            font-size: clamp(2.8rem, 12vw, 5.5rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #c0d0ff, #a0b8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 8px 24px rgba(0, 20, 80, 0.3);
+        }
+
+        .block p {
+            font-size: clamp(1rem, 3vw, 1.6rem);
+            font-weight: 500;
+            color: rgba(220, 235, 255, 0.8);
+            max-width: 600px;
+            line-height: 1.5;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.6rem 1.8rem;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .block .emoji-big {
+            font-size: clamp(4rem, 15vw, 8rem);
+            margin-bottom: 0.5rem;
+            display: block;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+        }
+
+        /* ---- NAVBAR ---- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: rgba(10, 14, 23, 0.65);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            flex-wrap: wrap;
+            pointer-events: auto;
+        }
+
+        .navbar button {
+            background: transparent;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: rgba(200, 215, 255, 0.7);
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.25s ease;
+            letter-spacing: 0.3px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+            pointer-events: auto;
+            touch-action: manipulation;
+        }
+
+        .navbar button:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f0f6ff;
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+
+        .navbar button.active {
+            background: rgba(120, 160, 255, 0.18);
+            color: #d6e4ff;
+            border-color: rgba(140, 180, 255, 0.3);
+            box-shadow: 0 0 20px rgba(80, 140, 255, 0.15);
+            font-weight: 600;
+        }
+
+        /* Puntos indicadores */
+        .dots {
+            position: fixed;
+            bottom: 2rem;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 0.7rem;
+            z-index: 90;
+            pointer-events: none;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: 0.3s ease;
+        }
+
+        .dot.active {
+            background: #b0caff;
+            width: 28px;
+            box-shadow: 0 0 16px rgba(100, 160, 255, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.8rem 0.8rem;
+                gap: 0.3rem;
+            }
+
+            .navbar button {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.9rem;
+            }
+
+            .block h2 {
+                font-size: clamp(2.5rem, 10vw, 4rem);
+            }
+
+            .block p {
+                font-size: 0.95rem;
+                padding: 0.4rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <button data-index="0" class="active">🚀 Bloque 1</button>
+        <button data-index="1">🌊 Bloque 2</button>
+        <button data-index="2">🌌 Bloque 3</button>
+    </nav>
+
+    <!-- VIEWPORT + TRACK -->
+    <div class="viewport">
+        <div class="slides-track" id="slidesTrack">
+            <section class="block block-1" data-index="0">
+                <span class="emoji-big">🚀</span>
+                <h2>Inicio</h2>
+                <p>Desliza horizontalmente o usa el navbar</p>
+            </section>
+            <section class="block block-2" data-index="1">
+                <span class="emoji-big">🌊</span>
+                <h2>Explora</h2>
+                <p>Slide táctil · fluido y sin saltos</p>
+            </section>
+            <section class="block block-3" data-index="2">
+                <span class="emoji-big">🌌</span>
+                <h2>Espacio</h2>
+                <p>100% fullscreen · 100dvh</p>
+            </section>
+        </div>
+    </div>
+
+    <!-- DOTS -->
+    <div class="dots" id="dotsContainer">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            const track = document.getElementById('slidesTrack');
+            const navButtons = document.querySelectorAll('.navbar button');
+            const dots = document.querySelectorAll('.dot');
+            const total = 3;
+            let current = 0;
+            let animating = false;
+
+            function goTo(index) {
+                if (animating) return;
+                if (index < 0) index = 0;
+                if (index >= total) index = total - 1;
+                if (index === current) return;
+
+                animating = true;
+                current = index;
+
+                // Mover track: translateX(-current * 100 / total) = -current * 33.333%
+                const percent = -(current * 100) / total;
+                track.style.transform = 'translateX(' + percent + '%)';
+
+                // Actualizar botones y dots
+                navButtons.forEach((btn, i) => {
+                    btn.classList.toggle('active', i === current);
+                });
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === current);
+                });
+
+                const onFinish = () => {
+                    animating = false;
+                    track.removeEventListener('transitionend', onFinish);
+                };
+                track.addEventListener('transitionend', onFinish);
+                setTimeout(() => {
+                    if (animating) {
+                        animating = false;
+                        track.removeEventListener('transitionend', onFinish);
+                    }
+                }, 700);
+            }
+
+            // --- NAVBAR ---
+            navButtons.forEach((btn) => {
+                btn.addEventListener('click', function () {
+                    const idx = parseInt(this.getAttribute('data-index'), 10);
+                    if (!isNaN(idx)) goTo(idx);
+                });
+            });
+
+            // --- TÁCTIL ---
+            let startX = 0,
+                startY = 0,
+                swiping = false;
+            const threshold = 30;
+
+            track.addEventListener('touchstart', (e) => {
+                if (animating) return;
+                const t = e.touches[0];
+                startX = t.clientX;
+                startY = t.clientY;
+                swiping = true;
+            }, { passive: true });
+
+            track.addEventListener('touchmove', (e) => {
+                if (!swiping || animating) return;
+                e.preventDefault();
+            }, { passive: false });
+
+            track.addEventListener('touchend', (e) => {
+                if (!swiping || animating) {
+                    swiping = false;
+                    return;
+                }
+                swiping = false;
+                if (!e.changedTouches || e.changedTouches.length === 0) return;
+                const end = e.changedTouches[0];
+                const dx = end.clientX - startX;
+                const dy = end.clientY - startY;
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold) {
+                    if (dx < 0 && current < total - 1) goTo(current + 1);
+                    else if (dx > 0 && current > 0) goTo(current - 1);
+                }
+                startX = 0;
+                startY = 0;
+            }, { passive: true });
+
+            track.addEventListener('touchcancel', () => {
+                swiping = false;
+                startX = 0;
+                startY = 0;
+            }, { passive: true });
+
+            // --- RUEDA (trackpad horizontal) ---
+            track.addEventListener('wheel', (e) => {
+                const horiz = Math.abs(e.deltaX) > Math.abs(e.deltaY) * 0.6;
+                if (!horiz) return;
+                e.preventDefault();
+                if (animating) return;
+                if (e.deltaX > 30 && current > 0) goTo(current - 1);
+                else if (e.deltaX < -30 && current < total - 1) goTo(current + 1);
+            }, { passive: false });
+
+            // --- TECLADO ---
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (current > 0) goTo(current - 1);
+                } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (current < total - 1) goTo(current + 1);
+                }
+            });
+
+            // --- Inicializar ---
+            track.style.transform = 'translateX(0%)';
+            navButtons.forEach((btn, i) => btn.classList.toggle('active', i === 0));
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === 0));
+            current = 0;
+            animating = false;
+
+            console.log('✅ Slider fullscreen corregido y estable.');
+        })();
+    </script>
+</body>
+
+</html>
