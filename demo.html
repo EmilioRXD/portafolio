@@ -176,8 +176,6 @@
         /* Patrón de fondo sutil */
         .bg-gray {
             background-color: #fafafa;
-            background-image: radial-gradient(var(--gray-300) 1px, transparent 1px);
-            background-size: 24px 24px;
         }
 
         /* Navegación */
@@ -213,10 +211,31 @@
         }
 
         .nav-links a {
+            position: relative;
             transition: color 0.2s;
         }
 
-        .nav-links a:hover {
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+            border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            transform: scaleX(1);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
             color: var(--accent);
         }
 
@@ -275,13 +294,15 @@
             width: 100vw;
             max-width: none;
             z-index: 0;
+            overflow: hidden;
         }
 
         .hero-bg img {
             width: 100%;
-            height: 100%;
+            height: 130%;
             object-fit: cover;
             object-position: center;
+            will-change: transform;
         }
 
         .hero-overlay {
@@ -387,37 +408,6 @@
             margin-bottom: 1.5rem;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .stat-card {
-            background-color: var(--white);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            border: 1px solid var(--gray-100);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 1.875rem;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--gray-400);
-        }
-
         /* Sección Experiencia y Educación */
         .section-header h2 {
             font-size: 1.875rem;
@@ -508,14 +498,34 @@
         .project-overlay {
             position: absolute;
             inset: 0;
-            background-image: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+            background-image: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, transparent 100%);
             opacity: 0;
             transition: opacity 0.3s ease;
             z-index: 20;
+            display: flex;
+            align-items: flex-end;
+            padding: 1.25rem;
+            will-change: opacity;
         }
 
         .project-card:hover .project-overlay {
             opacity: 1;
+        }
+
+        .project-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .chip {
+            padding: 0.35rem 0.875rem;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--white);
         }
 
         .project-title {
@@ -939,7 +949,13 @@
                 <div class="project-card fade-in">
                     <div class="project-image">
                         <img src="https://picsum.photos/id/0/800/600" alt="Finova Dashboard" loading="lazy">
-                        <div class="project-overlay"></div>
+                        <div class="project-overlay">
+                            <div class="project-chips">
+                                <span class="chip">React</span>
+                                <span class="chip">D3.js</span>
+                                <span class="chip">Design System</span>
+                            </div>
+                        </div>
                     </div>
                     <h3 class="project-title">Finova Dashboard</h3>
                     <p class="project-category">Diseño UI/UX, Aplicación Web</p>
@@ -948,7 +964,13 @@
                 <div class="project-card fade-in">
                     <div class="project-image">
                         <img src="https://picsum.photos/id/180/800/600" alt="Bloom Mobile App" loading="lazy">
-                        <div class="project-overlay"></div>
+                        <div class="project-overlay">
+                            <div class="project-chips">
+                                <span class="chip">Flutter</span>
+                                <span class="chip">Animaciones</span>
+                                <span class="chip">UX Research</span>
+                            </div>
+                        </div>
                     </div>
                     <h3 class="project-title">Bloom Mobile App</h3>
                     <p class="project-category">Diseño Móvil, iOS & Android</p>
@@ -957,7 +979,13 @@
                 <div class="project-card fade-in">
                     <div class="project-image">
                         <img src="https://picsum.photos/id/1/800/600" alt="Terra E-commerce" loading="lazy">
-                        <div class="project-overlay"></div>
+                        <div class="project-overlay">
+                            <div class="project-chips">
+                                <span class="chip">Branding</span>
+                                <span class="chip">Shopify</span>
+                                <span class="chip">SEO</span>
+                            </div>
+                        </div>
                     </div>
                     <h3 class="project-title">Terra E-commerce</h3>
                     <p class="project-category">Identidad de Marca, Diseño Web</p>
@@ -966,7 +994,13 @@
                 <div class="project-card fade-in">
                     <div class="project-image">
                         <img src="https://picsum.photos/id/60/800/600" alt="Vault Banking" loading="lazy">
-                        <div class="project-overlay"></div>
+                        <div class="project-overlay">
+                            <div class="project-chips">
+                                <span class="chip">Seguridad</span>
+                                <span class="chip">Biometría</span>
+                                <span class="chip">Accesibilidad</span>
+                            </div>
+                        </div>
                     </div>
                     <h3 class="project-title">Vault Banking</h3>
                     <p class="project-category">Diseño de Producto, Fintech</p>
@@ -1076,6 +1110,19 @@
             });
         });
 
+        // Parallax sutil del fondo del hero
+        const heroImg = document.querySelector('.hero-bg img');
+        const heroSection = document.querySelector('.hero');
+        let parallaxRaf = null;
+        window.addEventListener('scroll', () => {
+            if (parallaxRaf !== null) return;
+            parallaxRaf = requestAnimationFrame(() => {
+                parallaxRaf = null;
+                const y = Math.min(window.scrollY, heroSection.offsetHeight);
+                heroImg.style.transform = `translateY(${(-y * 0.3).toFixed(1)}px)`;
+            });
+        }, { passive: true });
+
         // Observador de intersección para animaciones Fade-in
         const observerOptions = {
             threshold: 0.1,
@@ -1093,6 +1140,24 @@
         document.querySelectorAll('.fade-in').forEach((el) => {
             observer.observe(el);
         });
+
+        // Sección activa en la navegación (scrollspy)
+        const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+        const navSections = [...navLinks]
+            .map(link => document.querySelector(link.getAttribute('href')))
+            .filter(Boolean);
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const id = entry.target.id;
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                });
+            });
+        }, { rootMargin: '-40% 0px -55% 0px' });
+
+        navSections.forEach((s) => sectionObserver.observe(s));
 
         // Datos de proyectos
         const projectsData = [
