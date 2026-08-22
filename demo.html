@@ -32,7 +32,7 @@
             --max-width: 1024px;
 
             /* Variables del scrollbar personalizado */
-            --scrollbar-size: 10px;
+            --scrollbar-size: 7px;
             --scrollbar-track: var(--gray-100);
             --scrollbar-thumb: var(--gray-300);
             --scrollbar-thumb-hover: var(--accent);
@@ -88,7 +88,7 @@
             right: 0;
             width: var(--scrollbar-size);
             height: 100vh;
-            background-color: var(--scrollbar-track);
+            background-color: transparent;
             z-index: 150;
             /* por encima del modal (100) y navbar (50) */
         }
@@ -98,7 +98,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            background-color: var(--scrollbar-thumb);
+            background-color: var(--accent);
             cursor: pointer;
             border-radius: 0;
             /* cuadrado, sin excepción */
