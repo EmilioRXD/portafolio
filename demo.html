@@ -1225,6 +1225,11 @@
             }
 
             function updateThumb() {
+                // Durante el arrastre, processDrag() ya posiciona el thumb a
+                // mano en el mismo frame — recalcularlo aquí sería trabajo
+                // duplicado (y forzaría layout reads innecesarios)
+                if (isDragging) return;
+
                 const { scrollTop, scrollHeight, clientHeight } = getScrollInfo(scrollbarTarget);
                 const trackHeight = track.clientHeight;
 
@@ -1250,7 +1255,6 @@
             // --- Arrastre optimizado: nada de layout reads en cada evento ---
             let dragScrollableDistance = 0;
             let dragMaxThumbTop = 0;
-            let dragThumbHeight = 0;
             let pendingClientY = null;
             let rafId = null;
             let dragTargetEl = null; // el elemento real al que se le desactiva el smooth-scroll
@@ -1284,8 +1288,8 @@
                 dragStartScrollTop = info.scrollTop;
                 dragScrollableDistance = info.scrollHeight - info.clientHeight;
                 const trackHeight = track.clientHeight;
-                dragThumbHeight = thumb.offsetHeight;
-                dragMaxThumbTop = trackHeight - dragThumbHeight;
+                const thumbHeight = thumb.offsetHeight;
+                dragMaxThumbTop = trackHeight - thumbHeight;
             }
 
             function processDrag() {
