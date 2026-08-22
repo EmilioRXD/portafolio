@@ -353,14 +353,33 @@
         }
 
         /* Sección Sobre Mí */
+        .section.about {
+            padding-bottom: 0;
+        }
+
         .about-grid {
             display: grid;
-            gap: 4rem;
+            align-items: end;
+        }
+
+        .about-text-wrapper {
+            padding-bottom: 0;
         }
 
         .about-text {
             color: var(--gray-500);
             margin-bottom: 1.5rem;
+        }
+
+        .about-photo {
+            display: flex;
+            justify-content: center;
+            align-items: end;
+        }
+
+        .about-photo img {
+            width: 100%;
+            object-fit: cover;
         }
 
         .about h2 {
@@ -748,7 +767,6 @@
                 font-size: 3rem;
             }
 
-            .about-grid,
             .projects-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -767,6 +785,13 @@
                 flex-direction: row;
                 justify-content: space-between;
                 text-align: left;
+            }
+        }
+
+        @media (min-width: 960px) {
+            .about-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
             }
         }
     </style>
@@ -825,7 +850,7 @@
     <!-- Sección Sobre Mí -->
     <section id="about" class="section bg-gray about">
         <div class="container about-grid">
-            <div class="fade-in">
+            <div class="about-text-wrapper fade-in">
                 <p class="subtitle">Sobre Mí</p>
                 <h2>Desarrollo con propósito</h2>
                 <p class="about-text">
@@ -841,23 +866,8 @@
                     ofimática para garantizar la continuidad operativa.
                 </p>
             </div>
-            <div class="stats-grid fade-in">
-                <div class="stat-card">
-                    <p class="stat-number">2+</p>
-                    <p class="stat-label">Años de Experiencia</p>
-                </div>
-                <div class="stat-card">
-                    <p class="stat-number">4+</p>
-                    <p class="stat-label">Proyectos Completados</p>
-                </div>
-                <div class="stat-card">
-                    <p class="stat-number">2</p>
-                    <p class="stat-label">Empresas</p>
-                </div>
-                <div class="stat-card">
-                    <p class="stat-number">TSU</p>
-                    <p class="stat-label">Título Universitario</p>
-                </div>
+            <div class="about-photo fade-in">
+                <img src="public/foto.png" alt="Jesús Emilio Rodríguez Alfonzo" />
             </div>
         </div>
     </section>
