@@ -30,6 +30,12 @@
             /* Color de Acento: Azul */
 
             --max-width: 1024px;
+
+            /* Variables del scrollbar personalizado */
+            --scrollbar-size: 10px;
+            --scrollbar-track: var(--gray-100);
+            --scrollbar-thumb: var(--gray-300);
+            --scrollbar-thumb-hover: var(--accent);
         }
 
         /* Reinicio y Base */
@@ -51,6 +57,61 @@
             -moz-osx-font-smoothing: grayscale;
             line-height: 1.5;
             overflow-x: hidden;
+        }
+
+        /* ============================================= */
+        /* Scrollbar 100% personalizado (simulado con JS)  */
+        /* Se oculta el scrollbar nativo del navegador y   */
+        /* se dibuja uno propio: garantiza el mismo look   */
+        /* (cuadrado, sin flechas) en cualquier SO/navegador */
+        /* ============================================= */
+
+        html,
+        .project-modal {
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE/Edge viejo */
+        }
+
+        html::-webkit-scrollbar,
+        .project-modal::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Edge, Safari */
+            width: 0;
+            height: 0;
+        }
+
+        .custom-scrollbar-track {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: var(--scrollbar-size);
+            height: 100vh;
+            background-color: var(--scrollbar-track);
+            z-index: 150;
+            /* por encima del modal (100) y navbar (50) */
+        }
+
+        .custom-scrollbar-thumb {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--scrollbar-thumb);
+            cursor: pointer;
+            border-radius: 0;
+            /* cuadrado, sin excepción */
+            will-change: transform, height;
+        }
+
+        .custom-scrollbar-thumb:hover,
+        .custom-scrollbar-thumb.dragging {
+            background-color: var(--scrollbar-thumb-hover);
+        }
+
+        .custom-scrollbar-track.hidden {
+            display: none;
         }
 
         a {
@@ -439,6 +500,153 @@
             fill: currentColor;
         }
 
+        /* Modal — Artículo */
+        .project-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: var(--white);
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+        }
+
+        .project-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .modal-topbar-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0.875rem 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-500);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal-close svg {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .article-hero {
+            max-width: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .article-hero img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/10;
+            object-fit: cover;
+            display: block;
+            border-radius: 0.5rem;
+        }
+
+        .article-body {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
+        }
+
+        .article-category {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.75rem;
+        }
+
+        .article-title {
+            font-size: clamp(2rem, 5vw, 3.25rem);
+            line-height: 1.15;
+            margin-bottom: 2rem;
+            text-wrap: balance;
+        }
+
+        .article-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .article-text p {
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            color: var(--gray-600);
+        }
+
+        .article-text p strong {
+            color: var(--gray-900);
+            font-weight: 600;
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .article-tag {
+            padding: 0.35rem 0.875rem;
+            background: var(--gray-100);
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        @media (max-width: 640px) {
+            .article-hero {
+                max-width: 100%;
+            }
+
+            .article-hero img {
+                border-radius: 0;
+            }
+
+            .article-body {
+                padding: 2rem 1.25rem 4rem;
+            }
+
+            .article-title {
+                margin-bottom: 1.5rem;
+            }
+        }
+
         /* Pie de Página */
         .footer {
             padding: 2rem 1.5rem;
@@ -509,6 +717,11 @@
 </head>
 
 <body>
+
+    <!-- Scrollbar personalizado (reemplaza al nativo del navegador) -->
+    <div id="customScrollbarTrack" class="custom-scrollbar-track">
+        <div id="customScrollbarThumb" class="custom-scrollbar-thumb"></div>
+    </div>
 
     <!-- Navegación -->
     <nav class="navbar">
@@ -756,6 +969,32 @@
         </div>
     </section>
 
+    <!-- Modal — Artículo -->
+    <div id="projectModal" class="project-modal">
+        <header class="modal-topbar">
+            <div class="modal-topbar-inner">
+                <button id="modalClose" class="modal-close">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Volver
+                </button>
+            </div>
+        </header>
+        <article class="modal-article">
+            <figure class="article-hero">
+                <img id="modalImage" src="" alt="">
+            </figure>
+            <div class="article-body">
+                <p id="modalCategory" class="article-category"></p>
+                <h1 id="modalTitle" class="article-title"></h1>
+                <div id="modalDescription" class="article-text"></div>
+                <div id="modalTags" class="article-tags"></div>
+            </div>
+        </article>
+    </div>
+
     <!-- Pie de Página -->
     <footer class="footer">
         <div class="footer-content">
@@ -800,16 +1039,309 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Descomenta la siguiente línea si solo quieres que se animen una vez
-                    // observer.unobserve(entry.target); 
                 }
             });
         }, observerOptions);
 
-        // Aplicar el observador a los elementos con la clase fade-in
         document.querySelectorAll('.fade-in').forEach((el) => {
             observer.observe(el);
         });
+
+        // Datos de proyectos
+        const projectsData = [
+            {
+                title: "Finova Dashboard",
+                category: "Diseño UI/UX · Aplicación Web",
+                image: "https://picsum.photos/id/0/800/600",
+                description: [
+                    "<strong>El reto:</strong> Finova, una fintech en crecimiento, necesitaba transformar su panel de control empresarial. Los usuarios perdían tiempo buscando datos críticos entre decenas de pantallas sin jerarquía ni coherencia visual.",
+                    "<strong>Mi enfoque:</strong> Comencé con una auditoría de usabilidad completa y entrevistas con 12 clientes clave. Identifiqué los flujos de uso más frecuentes y rediseñé la información arquitectura para poner los KPIs principales a un solo clic de distancia. Cada componente fue construido como pieza de un sistema de diseño modular.",
+                    "<strong>El resultado:</strong> El nuevo dashboard redujo el tiempo de toma de decisiones en un 40% y mejoró la retención de usuarios en un 25% en los primeros tres meses. El sistema de diseño se extendió a toda la plataforma."
+                ],
+                tags: ["React", "D3.js", "Design System", "Figma", "User Research"]
+            },
+            {
+                title: "Bloom Mobile App",
+                category: "Diseño Móvil · iOS & Android",
+                image: "https://picsum.photos/id/180/800/600",
+                description: [
+                    "<strong>El reto:</strong> Bloom quería crear una app de jardinería que se sintiera cálida y accesible, no técnica. El mercado estaba saturado de apps genéricas de recordatorios sin personalidad.",
+                    "<strong>Mi enfoque:</strong> Investigación etnográfica con 20 usuarios: visité sus hogares para entender su relación con las plantas. Diseñé una interfaz que usa lenguaje natural (\"Tu monstera tiene sed\") en vez de datos crudos. La paleta de verdes orgánicos y las micro-animaciones refuerzan la conexión emocional con el cuidado de plantas.",
+                    "<strong>El resultado:</strong> La app alcanzó 50,000 descargas en el primer mes con una calificación de 4.9 estrellas. El tiempo promedio de sesión superó los 3 minutos — alto para una app de utilidad."
+                ],
+                tags: ["Flutter", "Animaciones", "UX Research", "Prototyping", "Design Tokens"]
+            },
+            {
+                title: "Terra E-commerce",
+                category: "Identidad de Marca · Diseño Web",
+                image: "https://picsum.photos/id/1/800/600",
+                description: [
+                    "<strong>El reto:</strong> Terra necesitaba una identidad visual y una tienda online que comunicaran sustentabilidad de verdad, no solo greenwashing. El público objetivo son compradores conscientes que desconfían de las promesas vacías.",
+                    "<strong>Mi enfoque:</strong> Desarrollé una identidad de marca con texturas orgánicas, fotografía honesta y una paleta de tierra que evoca lo natural sin caer en el cliché del verde genérico. El flujo de compra fue optimizado con checkout de un solo paso y transparencia total en la huella de carbono de cada producto.",
+                    "<strong>El resultado:</strong> El abandono del carrito se redujo un 35%. Terra fue destacada como \"Diseño del mes\" en Awwwards y el tráfico orgánico creció un 60% gracias al SEO optimizado."
+                ],
+                tags: ["Branding", "Shopify", "Mobile First", "SEO", "Estrategia"]
+            },
+            {
+                title: "Vault Banking",
+                category: "Diseño de Producto · Fintech",
+                image: "https://picsum.photos/id/60/800/600",
+                description: [
+                    "<strong>El reto:</strong> Vault quería crear una app bancaria digital que fuera segura sin sentirse intimidante. El reto era balancear la confianza (necesaria en fintech) con la simplicidad (necesaria para la adopción).",
+                    "<strong>Mi enfoque:</strong> Diseñé un sistema de autenticación biométrica que se siente como una extensión natural del flujo, no como una barrera. La interfaz usa jerarquía visual clara: acciones primarias en azul, información contextual en gris suave. Cada pantalla tiene un solo objetivo.",
+                    "<strong>El resultado:</strong> La app alcanzó 4.8 estrellas en App Store y Google Play con más de 100,000 descargas en el primer trimestre. La tasa de completitud de onboarding subió del 62% al 91%."
+                ],
+                tags: ["Seguridad", "Biometría", "iOS", "Android", "Accesibilidad"]
+            }
+        ];
+
+        // Objetivo activo del scrollbar personalizado (se declara aquí para
+        // que tanto el modal como el IIFE del scrollbar lo compartan)
+        let scrollbarTarget = window;
+
+        // Modal
+        const modal = document.getElementById('projectModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalImage = document.getElementById('modalImage');
+        const modalCategory = document.getElementById('modalCategory');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalTags = document.getElementById('modalTags');
+
+        function openModal(project) {
+            modalImage.src = project.image;
+            modalImage.alt = project.title;
+            modalCategory.textContent = project.category;
+            modalTitle.textContent = project.title;
+            modalDescription.innerHTML = project.description
+                .map(p => `<p>${p}</p>`)
+                .join('');
+            modalTags.innerHTML = project.tags
+                .map(tag => `<span class="article-tag">${tag}</span>`)
+                .join('');
+            modal.classList.add('open');
+            modal.scrollTop = 0;
+            scrollbarTarget = modal;
+            if (window.updateCustomScrollbar) requestAnimationFrame(window.updateCustomScrollbar);
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+            scrollbarTarget = window;
+            if (window.updateCustomScrollbar) requestAnimationFrame(window.updateCustomScrollbar);
+        }
+
+        document.querySelectorAll('.project-card').forEach((card, index) => {
+            card.addEventListener('click', () => openModal(projectsData[index]));
+        });
+
+        modalClose.addEventListener('click', closeModal);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+        });
+
+        // ============================================
+        // Scrollbar 100% personalizado (simulado)
+        // ============================================
+        (function () {
+            const track = document.getElementById('customScrollbarTrack');
+            const thumb = document.getElementById('customScrollbarThumb');
+
+            // El "objetivo" activo (window o el modal) vive en la variable
+            // compartida scrollbarTarget, actualizada por openModal/closeModal
+            let isDragging = false;
+            let dragStartY = 0;
+            let dragStartScrollTop = 0;
+
+            function getScrollInfo(target) {
+                if (target === window) {
+                    return {
+                        scrollTop: window.scrollY || document.documentElement.scrollTop,
+                        scrollHeight: document.documentElement.scrollHeight,
+                        clientHeight: window.innerHeight
+                    };
+                }
+                return {
+                    scrollTop: target.scrollTop,
+                    scrollHeight: target.scrollHeight,
+                    clientHeight: target.clientHeight
+                };
+            }
+
+            function setScrollTop(target, value) {
+                if (target === window) {
+                    window.scrollTo({ top: value, left: 0, behavior: 'auto' });
+                } else {
+                    target.scrollTo({ top: value, left: 0, behavior: 'auto' });
+                }
+            }
+
+            function updateThumb() {
+                const { scrollTop, scrollHeight, clientHeight } = getScrollInfo(scrollbarTarget);
+                const trackHeight = track.clientHeight;
+
+                if (scrollHeight <= clientHeight + 1) {
+                    track.classList.add('hidden');
+                    return;
+                }
+                track.classList.remove('hidden');
+
+                const minThumb = 30;
+                const thumbHeight = Math.max((clientHeight / scrollHeight) * trackHeight, minThumb);
+                const maxThumbTop = trackHeight - thumbHeight;
+                const scrollableDistance = scrollHeight - clientHeight;
+                const ratio = scrollableDistance > 0 ? scrollTop / scrollableDistance : 0;
+                const thumbTop = ratio * maxThumbTop;
+
+                thumb.style.height = thumbHeight + 'px';
+                thumb.style.transform = `translateY(${thumbTop}px)`;
+            }
+            // Se expone para que openModal/closeModal puedan pedir un recálculo
+            window.updateCustomScrollbar = updateThumb;
+
+            // --- Arrastre optimizado: nada de layout reads en cada evento ---
+            let dragScrollableDistance = 0;
+            let dragMaxThumbTop = 0;
+            let dragThumbHeight = 0;
+            let pendingClientY = null;
+            let rafId = null;
+            let dragTargetEl = null; // el elemento real al que se le desactiva el smooth-scroll
+            let dragTargetPrevBehavior = '';
+
+            function disableSmoothScroll(target) {
+                // window no tiene "style" propio: el smooth-scroll real vive
+                // en <html>, así que hay que tocar document.documentElement
+                dragTargetEl = target === window ? document.documentElement : target;
+                dragTargetPrevBehavior = dragTargetEl.style.scrollBehavior || '';
+                dragTargetEl.style.scrollBehavior = 'auto';
+            }
+
+            function restoreSmoothScroll() {
+                if (dragTargetEl) {
+                    dragTargetEl.style.scrollBehavior = dragTargetPrevBehavior;
+                    dragTargetEl = null;
+                }
+            }
+
+            function startDrag(clientY) {
+                isDragging = true;
+                thumb.classList.add('dragging');
+                dragStartY = clientY;
+
+                // Mientras se arrastra, cero scroll suave — solo instantáneo
+                disableSmoothScroll(scrollbarTarget);
+
+                // Se miden las cosas UNA sola vez, al iniciar el arrastre
+                const info = getScrollInfo(scrollbarTarget);
+                dragStartScrollTop = info.scrollTop;
+                dragScrollableDistance = info.scrollHeight - info.clientHeight;
+                const trackHeight = track.clientHeight;
+                dragThumbHeight = thumb.offsetHeight;
+                dragMaxThumbTop = trackHeight - dragThumbHeight;
+            }
+
+            function processDrag() {
+                rafId = null;
+                if (!isDragging || pendingClientY === null || dragMaxThumbTop <= 0) return;
+
+                const deltaY = pendingClientY - dragStartY;
+                const deltaScroll = (deltaY / dragMaxThumbTop) * dragScrollableDistance;
+                let newScrollTop = dragStartScrollTop + deltaScroll;
+                newScrollTop = Math.max(0, Math.min(newScrollTop, dragScrollableDistance));
+
+                // Se mueve el thumb YA, en este mismo frame, sin esperar al
+                // evento 'scroll' (que llega asíncrono y genera el delay)
+                const ratio = dragScrollableDistance > 0 ? newScrollTop / dragScrollableDistance : 0;
+                thumb.style.transform = `translateY(${ratio * dragMaxThumbTop}px)`;
+
+                setScrollTop(scrollbarTarget, newScrollTop);
+            }
+
+            function onDragMove(clientY) {
+                if (!isDragging) return;
+                pendingClientY = clientY;
+                // Solo se procesa una vez por frame, nunca más rápido de lo
+                // que el navegador puede pintar — evita el delay acumulado
+                if (rafId === null) {
+                    rafId = requestAnimationFrame(processDrag);
+                }
+            }
+
+            function endDrag() {
+                if (!isDragging) return;
+                isDragging = false;
+                thumb.classList.remove('dragging');
+                document.body.style.userSelect = '';
+                pendingClientY = null;
+                if (rafId !== null) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+                // Se devuelve el smooth-scroll para que los enlaces del menú
+                // sigan animando como antes
+                restoreSmoothScroll();
+            }
+
+            thumb.addEventListener('mousedown', (e) => {
+                startDrag(e.clientY);
+                document.body.style.userSelect = 'none';
+                e.preventDefault();
+            });
+
+            window.addEventListener('mousemove', (e) => onDragMove(e.clientY));
+            window.addEventListener('mouseup', endDrag);
+
+
+            // Soporte táctil (tablets, laptops con pantalla táctil, etc.)
+            thumb.addEventListener('touchstart', (e) => {
+                startDrag(e.touches[0].clientY);
+                e.preventDefault();
+            }, { passive: false });
+
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                onDragMove(e.touches[0].clientY);
+                e.preventDefault();
+            }, { passive: false });
+
+            window.addEventListener('touchend', endDrag);
+
+            // Clic en el track (fuera del thumb) = saltar a esa posición
+            function jumpToPosition(clientY) {
+                const rect = track.getBoundingClientRect();
+                const clickY = clientY - rect.top;
+                const { scrollHeight, clientHeight } = getScrollInfo(scrollbarTarget);
+                const trackHeight = track.clientHeight;
+                const thumbHeight = thumb.offsetHeight;
+                const maxThumbTop = trackHeight - thumbHeight;
+                const ratio = maxThumbTop > 0 ? (clickY - thumbHeight / 2) / maxThumbTop : 0;
+                const scrollableDistance = scrollHeight - clientHeight;
+                const newScrollTop = Math.max(0, Math.min(ratio * scrollableDistance, scrollableDistance));
+                setScrollTop(scrollbarTarget, newScrollTop);
+            }
+
+            track.addEventListener('mousedown', (e) => {
+                if (e.target === thumb) return;
+                jumpToPosition(e.clientY);
+            });
+
+            track.addEventListener('touchstart', (e) => {
+                if (e.target === thumb) return;
+                jumpToPosition(e.touches[0].clientY);
+            }, { passive: true });
+
+            window.addEventListener('scroll', updateThumb, { passive: true });
+            modal.addEventListener('scroll', updateThumb, { passive: true });
+            window.addEventListener('resize', updateThumb);
+
+            // Recalcula cuando cambia el tamaño del contenido (imágenes cargando, fade-ins, etc.)
+            const resizeObserver = new ResizeObserver(() => updateThumb());
+            resizeObserver.observe(document.body);
+            resizeObserver.observe(modal.querySelector('.modal-article'));
+
+            updateThumb();
+        })();
     </script>
 </body>
 
