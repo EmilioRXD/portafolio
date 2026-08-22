@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alex Morgan — Diseñador de Producto</title>
+
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
     <style>
         /* Variables CSS */
         :root {
@@ -19,6 +25,8 @@
             --gray-800: #1f2937;
             --gray-900: #111827;
             --white: #ffffff;
+            --accent: #4f46e5;
+            /* Color de Acento: Indigo */
 
             --max-width: 1024px;
         }
@@ -41,6 +49,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             line-height: 1.5;
+            overflow-x: hidden;
         }
 
         a {
@@ -51,9 +60,12 @@
         /* Tipografía */
         h1,
         h2,
-        h3 {
+        h3,
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
             color: var(--gray-900);
             font-weight: 700;
+            letter-spacing: -0.03em;
         }
 
         .subtitle {
@@ -63,6 +75,18 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
             margin-bottom: 1rem;
+        }
+
+        /* Animaciones Fade-In */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Diseño y Contenedores */
@@ -76,8 +100,11 @@
             padding: 5rem 1.5rem;
         }
 
+        /* Patrón de fondo sutil */
         .bg-gray {
-            background-color: rgba(249, 250, 251, 0.5);
+            background-color: #fafafa;
+            background-image: radial-gradient(var(--gray-300) 1px, transparent 1px);
+            background-size: 24px 24px;
         }
 
         /* Navegación */
@@ -102,9 +129,6 @@
 
         .logo {
             font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.025em;
-            color: var(--gray-900);
         }
 
         .nav-links {
@@ -120,7 +144,7 @@
         }
 
         .nav-links a:hover {
-            color: var(--gray-900);
+            color: var(--accent);
         }
 
         .menu-btn {
@@ -158,7 +182,7 @@
         }
 
         .mobile-menu a:hover {
-            color: var(--gray-900);
+            color: var(--accent);
         }
 
         /* Sección Hero */
@@ -203,13 +227,15 @@
         }
 
         .btn-primary {
-            background-color: var(--gray-900);
+            background-color: var(--accent);
             color: var(--white);
             border: none;
+            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
         }
 
         .btn-primary:hover {
-            background-color: var(--gray-800);
+            background-color: #4338ca;
+            transform: translateY(-2px);
         }
 
         .btn-outline {
@@ -250,12 +276,18 @@
             border-radius: 1rem;
             border: 1px solid var(--gray-100);
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-number {
             font-size: 1.875rem;
+            font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            color: var(--gray-900);
+            color: var(--accent);
             margin-bottom: 0.25rem;
         }
 
@@ -264,7 +296,7 @@
             color: var(--gray-400);
         }
 
-        /* Sección Experiencia */
+        /* Sección Experiencia y Educación */
         .section-header h2 {
             font-size: 1.875rem;
             margin-bottom: 3rem;
@@ -274,7 +306,6 @@
             display: flex;
             flex-direction: column;
             gap: 2.5rem;
-            /* max-width: 48rem; */
         }
 
         .experience-item {
@@ -308,7 +339,7 @@
         .company-name {
             font-size: 1rem;
             font-weight: 600;
-            color: var(--gray-700);
+            color: var(--accent);
             margin-bottom: 1rem;
         }
 
@@ -325,10 +356,6 @@
 
         .project-card {
             cursor: pointer;
-        }
-
-        .project-card:hover .project-overlay {
-            background-color: rgba(17, 24, 39, 0.05);
         }
 
         .project-image {
@@ -349,19 +376,34 @@
             object-fit: cover;
             position: absolute;
             inset: 0;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
         }
 
         .project-overlay {
             position: absolute;
             inset: 0;
-            background-color: transparent;
-            transition: background-color 0.2s;
+            background-image: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
             z-index: 20;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
         }
 
         .project-title {
             font-size: 1.125rem;
             margin-bottom: 0.25rem;
+            transition: color 0.2s;
+        }
+
+        .project-card:hover .project-title {
+            color: var(--accent);
         }
 
         .project-category {
@@ -397,7 +439,7 @@
         }
 
         .social-links a:hover {
-            color: var(--gray-900);
+            color: var(--accent);
         }
 
         .social-links svg {
@@ -484,6 +526,7 @@
             <div class="nav-links">
                 <a href="#about">Sobre mí</a>
                 <a href="#experience">Experiencia</a>
+                <a href="#education">Educación</a>
                 <a href="#work">Proyectos</a>
                 <a href="#contact">Contacto</a>
             </div>
@@ -497,21 +540,22 @@
         <div id="mobileMenu" class="mobile-menu">
             <a href="#about">Sobre mí</a>
             <a href="#experience">Experiencia</a>
+            <a href="#education">Educación</a>
             <a href="#work">Proyectos</a>
             <a href="#contact">Contacto</a>
         </div>
     </nav>
 
     <!-- Sección Hero -->
-    <section class="hero container">
+    <section class="hero container fade-in">
         <div class="hero-content">
-            <p class="subtitle">Diseñador de Producto</p>
-            <h1>Creando experiencias<br>digitales</h1>
-            <p class="hero-desc">
-                Diseño interfaces cuidadosas y centradas en el usuario que equilibran la belleza con la funcionalidad. 
+            <p class="subtitle fade-in">Diseñador de Producto</p>
+            <h1 class="fade-in">Creando experiencias<br>digitales</h1>
+            <p class="hero-desc fade-in">
+                Diseño interfaces cuidadosas y centradas en el usuario que equilibran la belleza con la funcionalidad.
                 Basado en San Francisco, trabajando a nivel global.
             </p>
-            <div class="btn-group">
+            <div class="btn-group fade-in">
                 <a href="#work" class="btn btn-primary">Ver Proyectos</a>
                 <a href="#contact" class="btn btn-outline">Contactar</a>
             </div>
@@ -521,20 +565,22 @@
     <!-- Sección Sobre Mí -->
     <section id="about" class="section bg-gray about">
         <div class="container about-grid">
-            <div>
+            <div class="fade-in">
                 <p class="subtitle">Sobre Mí</p>
                 <h2>Diseño con propósito</h2>
                 <p class="about-text">
-                    Con más de 8 años de experiencia en diseño de productos digitales, me especializo en crear interfaces 
-                    intuitivas para aplicaciones web y móviles. Mi enfoque combina investigaciones basadas en datos con 
+                    Con más de 8 años de experiencia en diseño de productos digitales, me especializo en crear
+                    interfaces
+                    intuitivas para aplicaciones web y móviles. Mi enfoque combina investigaciones basadas en datos con
                     una estética limpia y minimalista.
                 </p>
                 <p class="about-text">
-                    Cuando no estoy diseñando, me encontrarás explorando fotografía, leyendo sobre arquitectura o caminando 
+                    Cuando no estoy diseñando, me encontrarás explorando fotografía, leyendo sobre arquitectura o
+                    caminando
                     por los senderos del Área de la Bahía.
                 </p>
             </div>
-            <div class="stats-grid">
+            <div class="stats-grid fade-in">
                 <div class="stat-card">
                     <p class="stat-number">8+</p>
                     <p class="stat-label">Años de Experiencia</p>
@@ -555,63 +601,107 @@
         </div>
     </section>
 
-    <!-- Sección Experiencia (NUEVA) -->
+    <!-- Sección Experiencia -->
     <section id="experience" class="section container">
-        <div class="section-header">
+        <div class="section-header fade-in">
             <p class="subtitle">Trayectoria</p>
             <h2>Experiencia Laboral</h2>
         </div>
         <div class="experience-list">
-
             <!-- Trabajo 1 -->
-            <div class="experience-item">
+            <div class="experience-item fade-in">
                 <div class="job-meta">
                     <h3 class="job-title">Diseñador de Producto Senior</h3>
                     <span class="job-duration">2021 — Presente</span>
                 </div>
                 <p class="company-name">TechFlow Inc.</p>
-                <p class="job-desc">Lideré el rediseño del panel de control empresarial principal, mejorando la retención de usuarios en un 25%.
-                    Gestioné un equipo de 3 diseñadores junior y establecí el primer sistema de diseño integral de la empresa
+                <p class="job-desc">Lideré el rediseño del panel de control empresarial principal, mejorando la
+                    retención de usuarios en un 25%.
+                    Gestioné un equipo de 3 diseñadores junior y establecí el primer sistema de diseño integral de la
+                    empresa
                     para garantizar la consistencia en todas las plataformas web y móviles.</p>
             </div>
 
             <!-- Trabajo 2 -->
-            <div class="experience-item">
+            <div class="experience-item fade-in">
                 <div class="job-meta">
                     <h3 class="job-title">Diseñador de Producto</h3>
                     <span class="job-duration">2018 — 2021</span>
                 </div>
                 <p class="company-name">Studio Minimal</p>
                 <p class="job-desc">Colaboré con equipos multifuncionales para entregar diseño de producto completo para
-                    clientes de comercio electrónico y tecnología financiera. Realicé investigaciones extensas de usuarios, 
+                    clientes de comercio electrónico y tecnología financiera. Realicé investigaciones extensas de
+                    usuarios,
                     pruebas de usabilidad y mejoras continuas basadas en análisis de datos.</p>
             </div>
 
             <!-- Trabajo 3 -->
-            <div class="experience-item">
+            <div class="experience-item fade-in">
                 <div class="job-meta">
                     <h3 class="job-title">Diseñador UI/UX</h3>
                     <span class="job-duration">2015 — 2018</span>
                 </div>
                 <p class="company-name">Creative Labs Agency</p>
-                <p class="job-desc">Diseñé aplicaciones web responsivas y aplicaciones móviles para startups en etapa temprana.
+                <p class="job-desc">Diseñé aplicaciones web responsivas y aplicaciones móviles para startups en etapa
+                    temprana.
                     Creé wireframes, prototipos interactivos y mockups de alta fidelidad, actuando como puente entre
                     las partes interesadas y los desarrolladores.</p>
             </div>
+        </div>
+    </section>
 
+    <!-- Sección Estudios y Certificados -->
+    <section id="education" class="section container">
+        <div class="section-header fade-in">
+            <p class="subtitle">Formación</p>
+            <h2>Estudios y Certificados</h2>
+        </div>
+        <div class="experience-list">
+            <!-- Estudio 1 -->
+            <div class="experience-item fade-in">
+                <div class="job-meta">
+                    <h3 class="job-title">Máster en Diseño de Interacción</h3>
+                    <span class="job-duration">2014 — 2015</span>
+                </div>
+                <p class="company-name">Universidad de California, Berkeley</p>
+                <p class="job-desc">Especialización en experiencia de usuario (UX), diseño centrado en el ser humano,
+                    arquitectura de la información y metodologías de investigación ágiles.</p>
+            </div>
+
+            <!-- Estudio 2 -->
+            <div class="experience-item fade-in">
+                <div class="job-meta">
+                    <h3 class="job-title">Grado en Diseño Gráfico</h3>
+                    <span class="job-duration">2010 — 2014</span>
+                </div>
+                <p class="company-name">Academia de Arte de San Francisco</p>
+                <p class="job-desc">Formación integral en fundamentos del diseño, tipografía avanzada, teoría del color
+                    y diseño inicial de interfaces web.</p>
+            </div>
+
+            <!-- Certificado 1 -->
+            <div class="experience-item fade-in">
+                <div class="job-meta">
+                    <h3 class="job-title">Certificación Profesional en Google UX Design</h3>
+                    <span class="job-duration">2020</span>
+                </div>
+                <p class="company-name">Google / Coursera</p>
+                <p class="job-desc">Programa intensivo centrado en el proceso de diseño UX: empatizar con usuarios,
+                    definir puntos de dolor, idear soluciones, crear wireframes y realizar pruebas de usabilidad.</p>
+            </div>
         </div>
     </section>
 
     <!-- Sección Proyectos -->
     <section id="work" class="section bg-gray">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header fade-in">
                 <p class="subtitle">Trabajos Seleccionados</p>
                 <h2>Proyectos Recientes</h2>
             </div>
             <div class="projects-grid">
                 <!-- Proyecto 1 -->
-                <div class="project-card">
+                <div class="project-card fade-in">
                     <div class="project-image">
                         <img src="https://picsum.photos/id/0/800/600" alt="Finova Dashboard" loading="lazy">
                         <div class="project-overlay"></div>
@@ -620,7 +710,7 @@
                     <p class="project-category">Diseño UI/UX, Aplicación Web</p>
                 </div>
                 <!-- Proyecto 2 -->
-                <div class="project-card">
+                <div class="project-card fade-in">
                     <div class="project-image">
                         <img src="https://picsum.photos/id/180/800/600" alt="Bloom Mobile App" loading="lazy">
                         <div class="project-overlay"></div>
@@ -629,7 +719,7 @@
                     <p class="project-category">Diseño Móvil, iOS & Android</p>
                 </div>
                 <!-- Proyecto 3 -->
-                <div class="project-card">
+                <div class="project-card fade-in">
                     <div class="project-image">
                         <img src="https://picsum.photos/id/1/800/600" alt="Terra E-commerce" loading="lazy">
                         <div class="project-overlay"></div>
@@ -638,7 +728,7 @@
                     <p class="project-category">Identidad de Marca, Diseño Web</p>
                 </div>
                 <!-- Proyecto 4 -->
-                <div class="project-card">
+                <div class="project-card fade-in">
                     <div class="project-image">
                         <img src="https://picsum.photos/id/60/800/600" alt="Vault Banking" loading="lazy">
                         <div class="project-overlay"></div>
@@ -651,12 +741,13 @@
     </section>
 
     <!-- Sección Contacto -->
-    <section id="contact" class="section contact">
+    <section id="contact" class="section contact fade-in">
         <div class="container">
             <p class="subtitle">Contacto</p>
             <h2>Trabajemos juntos</h2>
             <p class="contact-desc">
-                ¿Tienes un proyecto en mente o solo quieres saludar? Siempre estoy abierto a discutir nuevas oportunidades 
+                ¿Tienes un proyecto en mente o solo quieres saludar? Siempre estoy abierto a discutir nuevas
+                oportunidades
                 e ideas creativas.
             </p>
             <a href="mailto:hello@alexmorgan.design" class="btn btn-primary">
@@ -671,7 +762,7 @@
                 <a href="#">
                     <svg viewBox="0 0 24 24">
                         <path
-                            d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                            d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.224-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
                     </svg>
                 </a>
                 <a href="#">
@@ -722,6 +813,27 @@
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
+        });
+
+        // Observador de intersección para animaciones Fade-in
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Descomenta la siguiente línea si solo quieres que se animen una vez
+                    // observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        // Aplicar el observador a los elementos con la clase fade-in
+        document.querySelectorAll('.fade-in').forEach((el) => {
+            observer.observe(el);
         });
     </script>
 </body>
