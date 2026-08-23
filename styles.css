@@ -407,6 +407,7 @@
 
         .about-photo img {
             width: 100%;
+            max-width: 400px;
             object-fit: cover;
         }
 
@@ -803,6 +804,14 @@
             padding: 1rem 2rem;
         }
 
+        .btn-whatsapp {
+            background-color: #25D366;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1DA851;
+        }
+
         .social-links {
             display: flex;
             justify-content: center;
@@ -967,6 +976,10 @@
         }
 
         @media (max-width: 640px) {
+            .subtitle-break {
+                display: block;
+            }
+
             .article-hero {
                 max-width: 100%;
             }
@@ -1041,6 +1054,8 @@
 
             .about-grid {
                 align-items: center;
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
             }
 
             .job-meta {
@@ -1053,12 +1068,5 @@
                 flex-direction: row;
                 justify-content: space-between;
                 text-align: left;
-            }
-        }
-
-        @media (min-width: 960px) {
-            .about-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 2rem;
             }
         }
