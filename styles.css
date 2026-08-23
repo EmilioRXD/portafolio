@@ -1,15 +1,15 @@
         /* Variables CSS */
         :root {
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
             --white: #ffffff;
             --accent: #2FA084;
             --accent-hover: #26886C;
@@ -175,7 +175,7 @@
 
         /* Patrón de fondo sutil */
         .bg-gray {
-            background-color: #fafafa;
+            background-color: #f5f7fa;
         }
 
         /* Navegación */
@@ -415,6 +415,8 @@
             font-size: 1.875rem;
             margin-bottom: 1.5rem;
         }
+
+        
 
         /* Sección Habilidades */
         .skills-grid {
@@ -1016,7 +1018,7 @@
         }
 
         /* Consultas de Medios Responsivas */
-        @media (min-width: 768px) {
+        @media (min-width: 820px) {
             .nav-links {
                 display: flex;
             }
@@ -1028,7 +1030,9 @@
             .mobile-menu {
                 display: none !important;
             }
+        }
 
+        @media (min-width: 768px) {
             .hero h1 {
                 font-size: 4.5rem;
             }

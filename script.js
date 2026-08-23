@@ -1,3 +1,9 @@
+        // Calcular edad a partir del año de nacimiento
+        const ageEl = document.getElementById('age');
+        if (ageEl) {
+            ageEl.textContent = new Date().getFullYear() - 2001;
+        }
+
         // Alternar menú móvil
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
