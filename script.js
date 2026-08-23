@@ -12,6 +12,17 @@
             });
         });
 
+        // Acordeones de la sección Experiencia
+        document.querySelectorAll('.accordion-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const accordion = button.parentElement.querySelector('.accordion');
+                const isOpen = button.getAttribute('aria-expanded') === 'true';
+                accordion.classList.toggle('open', !isOpen);
+                button.setAttribute('aria-expanded', String(!isOpen));
+                button.querySelector('.accordion-label').textContent = isOpen ? 'Ver más' : 'Ver menos';
+            });
+        });
+
         // Desplazamiento suave para enlaces de anclaje
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
