@@ -129,6 +129,17 @@
             }
         ];
 
+        // Slug para enrutado por hash (botón "atrás" del navegador)
+        function slugify(str) {
+            return str.toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        const projectBySlug = {};
+        projectsData.forEach(p => { projectBySlug[slugify(p.title)] = p; });
+
         // Objetivo activo del scrollbar personalizado (se declara aquí para
         // que tanto el modal como el IIFE del scrollbar lo compartan)
         let scrollbarTarget = window;
@@ -143,6 +154,7 @@
         const modalTags = document.getElementById('modalTags');
 
         function openModal(project) {
+            const wasOpen = modal.classList.contains('open');
             modalImage.src = project.image;
             modalImage.alt = project.title;
             modalCategory.textContent = project.date ? `${project.date} · ${project.category}` : project.category;
@@ -157,23 +169,47 @@
             modal.scrollTop = 0;
             scrollbarTarget = modal;
             if (window.updateCustomScrollbar) requestAnimationFrame(window.updateCustomScrollbar);
+
+            // Entrada de historial invisible (sin cambiar la URL) para que el
+            // botón "atrás" del navegador cierre el modal en vez de salir del sitio
+            if (!wasOpen) {
+                try { history.pushState({ modalOpen: true }, ''); } catch (e) { /* file:// puede no permitirlo */ }
+            }
         }
 
         function closeModal() {
+            if (!modal.classList.contains('open')) return;
             modal.classList.remove('open');
             scrollbarTarget = window;
             if (window.updateCustomScrollbar) requestAnimationFrame(window.updateCustomScrollbar);
+        }
+
+        function requestClose() {
+            if (!modal.classList.contains('open')) return;
+            closeModal();
+            if (history.state && history.state.modalOpen) history.back();
         }
 
         document.querySelectorAll('.project-card').forEach((card, index) => {
             card.addEventListener('click', () => openModal(projectsData[index]));
         });
 
-        modalClose.addEventListener('click', closeModal);
+        modalClose.addEventListener('click', requestClose);
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+            if (e.key === 'Escape' && modal.classList.contains('open')) requestClose();
         });
+
+        // El botón "atrás" del móvil cierra el modal
+        window.addEventListener('popstate', () => {
+            if (modal.classList.contains('open')) closeModal();
+        });
+
+        // Compatibilidad: una URL con #project/<slug> sigue abriendo el proyecto
+        (function initFromHash() {
+            const match = location.hash.match(/^#project\/(.+)$/);
+            if (match && projectBySlug[match[1]]) openModal(projectBySlug[match[1]]);
+        })();
 
         // ============================================
         // Scrollbar 100% personalizado (simulado)
