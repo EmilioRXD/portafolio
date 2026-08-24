@@ -92,48 +92,40 @@
         // Datos de proyectos
         const projectsData = [
             {
-                title: "Finova Dashboard",
-                category: "Diseño UI/UX · Aplicación Web",
-                image: "https://picsum.photos/id/0/800/600",
+                title: "InventoryAPP",
+                category: "Aplicación Web · Inventario & POS",
+                date: "2022",
+                image: "public/inventory-logo.png",
                 description: [
-                    "<strong>El reto:</strong> Finova, una fintech en crecimiento, necesitaba transformar su panel de control empresarial. Los usuarios perdían tiempo buscando datos críticos entre decenas de pantallas sin jerarquía ni coherencia visual.",
-                    "<strong>Mi enfoque:</strong> Comencé con una auditoría de usabilidad completa y entrevistas con 12 clientes clave. Identifiqué los flujos de uso más frecuentes y rediseñé la información arquitectura para poner los KPIs principales a un solo clic de distancia. Cada componente fue construido como pieza de un sistema de diseño modular.",
-                    "<strong>El resultado:</strong> El nuevo dashboard redujo el tiempo de toma de decisiones en un 40% y mejoró la retención de usuarios en un 25% en los primeros tres meses. El sistema de diseño se extendió a toda la plataforma."
+                    "<strong>El reto:</strong> Los pequeños y medianos negocios necesitan controlar su inventario, ventas y gastos sin depender de planillas o herramientas dispersas. El sistema debía ser completo pero accesible para el personal no técnico.",
+                    "<strong>Mi enfoque:</strong> Desarrollé una aplicación web integral de inventario y punto de venta (POS): alta, baja y edición de productos, control de stock mínimo con alertas, ventas con generación de tickets, apertura y cierre de caja, gestión de créditos a clientes, control de gastos y reportes de inventario, ventas, caja y bajas. Incluye gestión de usuarios y permisos.",
+                    "<strong>El resultado:</strong> Un sistema listo para operar en negocios reales que unifica inventario, ventas y reportes en una sola herramienta, con valoración del inventario y datos configurables de la empresa."
                 ],
-                tags: ["React", "D3.js", "Design System", "Figma", "User Research"]
+                tags: ["PHP", "MySQL", "POS", "Bootstrap", "JavaScript"]
             },
             {
-                title: "Bloom Mobile App",
-                category: "Diseño Móvil · iOS & Android",
+                title: "Water Tank IoT",
+                category: "IoT · Monitoreo de Nivel de Agua",
+                date: "2023",
+                image: "public/watertank-icon.png",
+                description: [
+                    "<strong>El reto:</strong> Monitorear el nivel de agua de un tanque de forma remota y en tiempo real, evitando visitas manuales y permitiendo decidir cuándo bombear o llenar.",
+                    "<strong>Mi enfoque:</strong> Construí una app móvil en React Native que consulta el nivel del tanque a través de un backend Node.js conectado por MQTT al dispositivo medidor. Las pantallas de nivel y del estado general del tanque muestran la información clara y actualizada para el usuario.",
+                    "<strong>El resultado:</strong> Un sistema IoT funcional de punta a punta: del sensor del tanque hasta la pantalla del celular, demostrando integración de hardware, comunicación MQTT y desarrollo móvil."
+                ],
+                tags: ["React Native", "Node.js", "MQTT", "IoT", "Backend"]
+            },
+            {
+                title: "Control de Acceso IUTA",
+                category: "Proyecto Académico · IoT & RFID",
+                date: "2025",
                 image: "https://picsum.photos/id/180/800/600",
                 description: [
-                    "<strong>El reto:</strong> Bloom quería crear una app de jardinería que se sintiera cálida y accesible, no técnica. El mercado estaba saturado de apps genéricas de recordatorios sin personalidad.",
-                    "<strong>Mi enfoque:</strong> Investigación etnográfica con 20 usuarios: visité sus hogares para entender su relación con las plantas. Diseñé una interfaz que usa lenguaje natural (\"Tu monstera tiene sed\") en vez de datos crudos. La paleta de verdes orgánicos y las micro-animaciones refuerzan la conexión emocional con el cuidado de plantas.",
-                    "<strong>El resultado:</strong> La app alcanzó 50,000 descargas en el primer mes con una calificación de 4.9 estrellas. El tiempo promedio de sesión superó los 3 minutos — alto para una app de utilidad."
+                    "<strong>El reto:</strong> Automatizar el control de acceso del IUTA: registrar quién entra, validar credenciales y centralizar la lógica sin depender de lectores de baja programación.",
+                    "<strong>Mi enfoque:</strong> Diseñé una arquitectura de dos capas: un backend en Python (API REST + MQTT) que valida credenciales y gestiona los registros, y un driver en C compuesto por módulos de lectura (reader) y escritura (writer) para interactuar con los dispositivos de tarjetas. La comunicación con los lectores se realiza vía MQTT.",
+                    "<strong>El resultado:</strong> Un sistema completo de control de acceso con separación clara entre hardware (driver en C) y lógica de negocio (backend Python), validado como proyecto de titulación."
                 ],
-                tags: ["Flutter", "Animaciones", "UX Research", "Prototyping", "Design Tokens"]
-            },
-            {
-                title: "Terra E-commerce",
-                category: "Identidad de Marca · Diseño Web",
-                image: "https://picsum.photos/id/1/800/600",
-                description: [
-                    "<strong>El reto:</strong> Terra necesitaba una identidad visual y una tienda online que comunicaran sustentabilidad de verdad, no solo greenwashing. El público objetivo son compradores conscientes que desconfían de las promesas vacías.",
-                    "<strong>Mi enfoque:</strong> Desarrollé una identidad de marca con texturas orgánicas, fotografía honesta y una paleta de tierra que evoca lo natural sin caer en el cliché del verde genérico. El flujo de compra fue optimizado con checkout de un solo paso y transparencia total en la huella de carbono de cada producto.",
-                    "<strong>El resultado:</strong> El abandono del carrito se redujo un 35%. Terra fue destacada como \"Diseño del mes\" en Awwwards y el tráfico orgánico creció un 60% gracias al SEO optimizado."
-                ],
-                tags: ["Branding", "Shopify", "Mobile First", "SEO", "Estrategia"]
-            },
-            {
-                title: "Vault Banking",
-                category: "Diseño de Producto · Fintech",
-                image: "https://picsum.photos/id/60/800/600",
-                description: [
-                    "<strong>El reto:</strong> Vault quería crear una app bancaria digital que fuera segura sin sentirse intimidante. El reto era balancear la confianza (necesaria en fintech) con la simplicidad (necesaria para la adopción).",
-                    "<strong>Mi enfoque:</strong> Diseñé un sistema de autenticación biométrica que se siente como una extensión natural del flujo, no como una barrera. La interfaz usa jerarquía visual clara: acciones primarias en azul, información contextual en gris suave. Cada pantalla tiene un solo objetivo.",
-                    "<strong>El resultado:</strong> La app alcanzó 4.8 estrellas en App Store y Google Play con más de 100,000 descargas en el primer trimestre. La tasa de completitud de onboarding subió del 62% al 91%."
-                ],
-                tags: ["Seguridad", "Biometría", "iOS", "Android", "Accesibilidad"]
+                tags: ["Python", "C", "MQTT", "RFID", "IoT"]
             }
         ];
 
@@ -147,6 +139,7 @@
         const modalImage = document.getElementById('modalImage');
         const modalCategory = document.getElementById('modalCategory');
         const modalTitle = document.getElementById('modalTitle');
+        const modalDate = document.getElementById('modalDate');
         const modalDescription = document.getElementById('modalDescription');
         const modalTags = document.getElementById('modalTags');
 
@@ -155,6 +148,7 @@
             modalImage.alt = project.title;
             modalCategory.textContent = project.category;
             modalTitle.textContent = project.title;
+            modalDate.textContent = project.date;
             modalDescription.innerHTML = project.description
                 .map(p => `<p>${p}</p>`)
                 .join('');

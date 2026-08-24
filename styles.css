@@ -942,6 +942,13 @@
             text-wrap: balance;
         }
 
+        .article-date {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
         .article-text {
             display: flex;
             flex-direction: column;
