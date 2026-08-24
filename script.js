@@ -139,16 +139,14 @@
         const modalImage = document.getElementById('modalImage');
         const modalCategory = document.getElementById('modalCategory');
         const modalTitle = document.getElementById('modalTitle');
-        const modalDate = document.getElementById('modalDate');
         const modalDescription = document.getElementById('modalDescription');
         const modalTags = document.getElementById('modalTags');
 
         function openModal(project) {
             modalImage.src = project.image;
             modalImage.alt = project.title;
-            modalCategory.textContent = project.category;
+            modalCategory.textContent = project.date ? `${project.date} · ${project.category}` : project.category;
             modalTitle.textContent = project.title;
-            modalDate.textContent = project.date;
             modalDescription.innerHTML = project.description
                 .map(p => `<p>${p}</p>`)
                 .join('');

@@ -416,7 +416,7 @@
             margin-bottom: 1.5rem;
         }
 
-        
+
 
         /* Sección Habilidades */
         .skills-grid {
@@ -923,7 +923,7 @@
         .article-body {
             max-width: 720px;
             margin: 0 auto;
-            padding: 3rem 0 5rem;
+            padding: 1.5rem 0 5rem;
         }
 
         .article-category {
@@ -940,13 +940,6 @@
             line-height: 1.15;
             margin-bottom: 2rem;
             text-wrap: balance;
-        }
-
-        .article-date {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
         }
 
         .article-text {
@@ -970,9 +963,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-top: 2.5rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--gray-200);
+            margin-bottom: 1.5rem;
         }
 
         .article-tag {
