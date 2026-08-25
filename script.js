@@ -94,29 +94,34 @@
         // ============================================
         const freelanceData = [
             {
-                title: "Mantenimiento de equipos",
-                image: "https://picsum.photos/id/0/800/600",
-                description: "Placeholder: mantenimiento preventivo y correctivo de computadoras de escritorio y laptops para clientes particulares y pequeños negocios."
+                title: "Windows 11 en Chromebook",
+                image: "public/services/pic-compu-01.jpg",
+                description: "Instalé Windows 11 en una Chromebook que originalmente traía Chrome OS, ampliando la versatilidad del equipo para nuevos usos."
             },
             {
-                title: "Instalación de software",
-                image: "https://picsum.photos/id/1/800/600",
-                description: "Placeholder: instalación y configuración de sistemas operativos, ofimática y aplicaciones de uso diario."
+                title: "Windows 10 corporativo",
+                image: "public/services/pic-compu-02.jpg",
+                description: "Realicé el mantenimiento e instalé Windows 10 corporativo, con su licencia y programas, en 3 equipos de una oficina."
             },
             {
-                title: "Redes y conectividad",
-                image: "https://picsum.photos/id/2/800/600",
-                description: "Placeholder: configuración de routers, puntos de acceso y solución de problemas de conectividad."
+                title: "Reparación de equipo",
+                image: "public/services/pic-compu-03.jpg",
+                description: "El equipo no encendía: diagnostiqué la falla, reemplacé el componente defectuoso y volvió a funcionar. Aproveché para aplicar el mantenimiento recomendado."
             },
             {
-                title: "Soporte remoto",
-                image: "https://picsum.photos/id/3/800/600",
-                description: "Placeholder: atención y resolución de incidencias de forma remota, garantizando la continuidad operativa."
+                title: "Limpieza de virus y optimización",
+                image: "public/services/pic-compu-04.jpg",
+                description: "Eliminé virus y optimicé el equipo, que presentaba serios problemas de rendimiento."
             },
             {
-                title: "Recuperación de datos",
-                image: "https://picsum.photos/id/4/800/600",
-                description: "Placeholder: recuperación de información y resguardo de datos para evitar pérdidas irreversibles."
+                title: "Restauración de arranque",
+                image: "public/services/pic-compu-05.jpg",
+                description: "El arranque de Windows estaba estropeado: respaldé los datos del usuario y restauré el arranque del sistema."
+            },
+            {
+                title: "Ensamblaje de equipo gamer",
+                image: "public/services/pic-compu-06.jpg",
+                description: "Ensamblé un equipo de alta potencia de cómputo, pensado para juegos y diseño."
             }
         ];
 
@@ -155,6 +160,11 @@
                 centeredSlides: true,
                 spaceBetween: 16,
                 grabCursor: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true
+                },
                 keyboard: {
                     enabled: true,
                     onlyInViewport: true
