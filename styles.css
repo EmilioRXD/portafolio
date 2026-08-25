@@ -200,6 +200,15 @@
 
         .logo {
             font-size: 1.25rem;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 1.75rem;
+            height: 1.75rem;
+            display: block;
+            margin-right: 0.5rem;
         }
 
         .nav-links {
@@ -791,6 +800,112 @@
             color: var(--gray-400);
         }
 
+        /* Sección Trabajo Independiente (Carrusel) */
+        .swiper#freelanceCarousel {
+            width: 100%;
+            padding: 0.25rem 0 1rem;
+            position: relative;
+        }
+
+        .swiper-slide {
+            height: auto;
+        }
+
+        .freelance-card {
+            height: 100%;
+            background: var(--white);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .freelance-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .freelance-card .project-image {
+            margin-bottom: 0;
+            aspect-ratio: 4/3;
+        }
+
+        .freelance-body {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .freelance-title {
+            font-size: 1.125rem;
+            margin: 0;
+        }
+
+        .freelance-desc {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        /* Botones de navegación Swiper */
+        .carousel-btn.swiper-button-prev,
+        .carousel-btn.swiper-button-next {
+            position: absolute;
+            top: 40%;
+            z-index: 30;
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 9999px;
+            border: 1px solid var(--gray-300);
+            background: var(--white);
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .carousel-btn.swiper-button-prev {
+            left: 0.5rem;
+        }
+
+        .carousel-btn.swiper-button-next {
+            right: 0.5rem;
+        }
+
+        .carousel-btn svg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .carousel-btn.swiper-button-prev::after,
+        .carousel-btn.swiper-button-next::after {
+            display: none;
+        }
+
+        .carousel-btn.swiper-button-prev:hover,
+        .carousel-btn.swiper-button-next:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--white);
+        }
+
+        .carousel-btn.swiper-button-disabled {
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        /* Sin indicador de paginación */
+        #freelanceCarousel .swiper-pagination {
+            display: none;
+        }
+
         /* Sección Contacto */
         .contact {
             text-align: center;
@@ -996,6 +1111,18 @@
             .article-title {
                 margin-bottom: 1.5rem;
             }
+
+            /* El carrusel rompe el padding del container para verse
+               de borde a borde en mobile (los botones quedan ocultos). */
+            .swiper#freelanceCarousel {
+                margin-inline: calc(-1 * clamp(1.25rem, 4vw, 2rem));
+                width: auto;
+            }
+
+            .carousel-btn.swiper-button-prev,
+            .carousel-btn.swiper-button-next {
+                display: none;
+            }
         }
 
         /* Pie de Página */
@@ -1017,7 +1144,7 @@
         }
 
         /* Consultas de Medios Responsivas */
-        @media (min-width: 820px) {
+        @media (min-width: 850px) {
             .nav-links {
                 display: flex;
             }

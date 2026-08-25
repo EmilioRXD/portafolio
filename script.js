@@ -89,6 +89,95 @@
 
         navSections.forEach((s) => sectionObserver.observe(s));
 
+        // ============================================
+        // Carrusel de Trabajo Independiente
+        // ============================================
+        const freelanceData = [
+            {
+                title: "Mantenimiento de equipos",
+                image: "https://picsum.photos/id/0/800/600",
+                description: "Placeholder: mantenimiento preventivo y correctivo de computadoras de escritorio y laptops para clientes particulares y pequeños negocios."
+            },
+            {
+                title: "Instalación de software",
+                image: "https://picsum.photos/id/1/800/600",
+                description: "Placeholder: instalación y configuración de sistemas operativos, ofimática y aplicaciones de uso diario."
+            },
+            {
+                title: "Redes y conectividad",
+                image: "https://picsum.photos/id/2/800/600",
+                description: "Placeholder: configuración de routers, puntos de acceso y solución de problemas de conectividad."
+            },
+            {
+                title: "Soporte remoto",
+                image: "https://picsum.photos/id/3/800/600",
+                description: "Placeholder: atención y resolución de incidencias de forma remota, garantizando la continuidad operativa."
+            },
+            {
+                title: "Recuperación de datos",
+                image: "https://picsum.photos/id/4/800/600",
+                description: "Placeholder: recuperación de información y resguardo de datos para evitar pérdidas irreversibles."
+            }
+        ];
+
+        const track = document.getElementById('freelanceTrack');
+        const prevBtn = document.getElementById('carouselPrev');
+        const nextBtn = document.getElementById('carouselNext');
+
+        function buildCard(job) {
+            const card = document.createElement('article');
+            card.className = 'freelance-card';
+            card.innerHTML = `
+                <div class="project-image">
+                    <img src="${job.image}" alt="${job.title}" loading="lazy" draggable="false">
+                </div>
+                <div class="freelance-body">
+                    <h3 class="freelance-title">${job.title}</h3>
+                    <p class="freelance-desc">${job.description}</p>
+                </div>
+            `;
+            return card;
+        }
+
+        if (track && freelanceData.length && window.Swiper) {
+            const frag = document.createDocumentFragment();
+            freelanceData.forEach(job => {
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+                slide.appendChild(buildCard(job));
+                frag.appendChild(slide);
+            });
+            track.appendChild(frag);
+
+            const swiper = new Swiper('#freelanceCarousel', {
+                loop: true,
+                slidesPerView: 1.2,
+                centeredSlides: true,
+                spaceBetween: 16,
+                grabCursor: true,
+                keyboard: {
+                    enabled: true,
+                    onlyInViewport: true
+                },
+                navigation: {
+                    prevEl: prevBtn,
+                    nextEl: nextBtn
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2,
+                        centeredSlides: false,
+                        spaceBetween: 24
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        centeredSlides: false,
+                        spaceBetween: 28
+                    }
+                }
+            });
+        }
+
         // Datos de proyectos
         const projectsData = [
             {
