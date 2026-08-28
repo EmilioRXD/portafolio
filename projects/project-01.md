@@ -12,12 +12,12 @@ tags: Python, C, MQTT, RFID, IoT
 
 **El resultado:** Un sistema completo de control de acceso con separación clara entre hardware (driver en C) y lógica de negocio (backend Python), validado como proyecto de titulación.
 
-@video src="public/media/project1/file-01.mp4" desc="Configuración del lector y validación de credenciales."
+@video src="public/media/project-01/file-01.mp4" desc="Configuración del lector y validación de credenciales."
 
-@image src="public/media/project1/pic-01.png" desc="Configuración del lector y validación de credenciales."
+@image src="public/media/project-01/pic-01.png" desc="Configuración del lector y validación de credenciales."
 
-@video src="public/media/project1/file-02.mp4" desc="Lectura de tarjeta y registro del acceso en tiempo real."
+@video src="public/media/project-01/file-02.mp4" desc="Lectura de tarjeta y registro del acceso en tiempo real."
 
-@video src="public/media/project1/file-03.mp4" desc="Escritura de credenciales con el módulo writer."
+@video src="public/media/project-01/file-03.mp4" desc="Escritura de credenciales con el módulo writer."
 
-@video src="public/media/project1/file-04.mp4" desc="Prueba del flujo completo de entrada."
+@video src="public/media/project-01/file-04.mp4" desc="Prueba del flujo completo de entrada."

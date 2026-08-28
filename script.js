@@ -197,9 +197,9 @@ let projectBySlug = {};
 // ============================================
 // Añade aquí la ruta de cada proyecto nuevo (projects/*.md)
 const PROJECT_FILES = [
-    "projects/control-de-acceso-iuta.md",
-    "projects/water-tank-iot.md",
-    "projects/inventoryapp.md"
+    "projects/project-01.md",
+    "projects/project-02.md",
+    "projects/project-03.md"
 ];
 
 function escapeHtml(str) {
