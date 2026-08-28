@@ -188,56 +188,160 @@
             });
         }
 
-        // Datos de proyectos
-        const projectsData = [
-            {
-                title: "InventoryAPP",
-                category: "Aplicación Web · Inventario & POS",
-                date: "2022",
-                image: "public/inventory-logo.png",
-                description: [
-                    "<strong>El reto:</strong> Los pequeños y medianos negocios necesitan controlar su inventario, ventas y gastos sin depender de planillas o herramientas dispersas. El sistema debía ser completo pero accesible para el personal no técnico.",
-                    "<strong>Mi enfoque:</strong> Desarrollé una aplicación web integral de inventario y punto de venta (POS): alta, baja y edición de productos, control de stock mínimo con alertas, ventas con generación de tickets, apertura y cierre de caja, gestión de créditos a clientes, control de gastos y reportes de inventario, ventas, caja y bajas. Incluye gestión de usuarios y permisos.",
-                    "<strong>El resultado:</strong> Un sistema listo para operar en negocios reales que unifica inventario, ventas y reportes en una sola herramienta, con valoración del inventario y datos configurables de la empresa."
-                ],
-                tags: ["PHP", "MySQL", "POS", "Bootstrap", "JavaScript"]
-            },
-            {
-                title: "Water Tank IoT",
-                category: "IoT · Monitoreo de Nivel de Agua",
-                date: "2023",
-                image: "public/watertank-icon.png",
-                description: [
-                    "<strong>El reto:</strong> Monitorear el nivel de agua de un tanque de forma remota y en tiempo real, evitando visitas manuales y permitiendo decidir cuándo bombear o llenar.",
-                    "<strong>Mi enfoque:</strong> Construí una app móvil en React Native que consulta el nivel del tanque a través de un backend Node.js conectado por MQTT al dispositivo medidor. Las pantallas de nivel y del estado general del tanque muestran la información clara y actualizada para el usuario.",
-                    "<strong>El resultado:</strong> Un sistema IoT funcional de punta a punta: del sensor del tanque hasta la pantalla del celular, demostrando integración de hardware, comunicación MQTT y desarrollo móvil."
-                ],
-                tags: ["React Native", "Node.js", "MQTT", "IoT", "Backend"]
-            },
-            {
-                title: "Control de Acceso IUTA",
-                category: "Proyecto Académico · IoT & RFID",
-                date: "2025",
-                image: "https://picsum.photos/id/180/800/600",
-                description: [
-                    "<strong>El reto:</strong> Automatizar el control de acceso del IUTA: registrar quién entra, validar credenciales y centralizar la lógica sin depender de lectores de baja programación.",
-                    "<strong>Mi enfoque:</strong> Diseñé una arquitectura de dos capas: un backend en Python (API REST + MQTT) que valida credenciales y gestiona los registros, y un driver en C compuesto por módulos de lectura (reader) y escritura (writer) para interactuar con los dispositivos de tarjetas. La comunicación con los lectores se realiza vía MQTT.",
-                    "<strong>El resultado:</strong> Un sistema completo de control de acceso con separación clara entre hardware (driver en C) y lógica de negocio (backend Python), validado como proyecto de titulación."
-                ],
-                tags: ["Python", "C", "MQTT", "RFID", "IoT"]
-            }
-        ];
+// Datos de proyectos: se cargan desde archivos Markdown en /projects
+let projectsData = [];
+let projectBySlug = {};
 
-        // Slug para enrutado por hash (botón "atrás" del navegador)
-        function slugify(str) {
-            return str.toLowerCase()
-                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-+|-+$/g, '');
+// ============================================
+// Carga de proyectos desde Markdown
+// ============================================
+// Añade aquí la ruta de cada proyecto nuevo (projects/*.md)
+const PROJECT_FILES = [
+    "projects/control-de-acceso-iuta.md",
+    "projects/water-tank-iot.md",
+    "projects/inventoryapp.md"
+];
+
+function escapeHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function inlineMarkdown(text) {
+    return escapeHtml(text).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+
+function parseProjectMarkdown(md) {
+    // Front matter: bloque --- clave: valor ---
+    const fmMatch = md.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
+    const fm = {};
+    let body = md;
+    if (fmMatch) {
+        fmMatch[1].split('\n').forEach(line => {
+            const idx = line.indexOf(':');
+            if (idx === -1) return;
+            const key = line.slice(0, idx).trim();
+            const value = line.slice(idx + 1).trim().replace(/^['"]|['"]$/g, '');
+            fm[key] = value;
+        });
+        body = fmMatch[2];
+    }
+
+    const tags = fm.tags ? fm.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
+
+    // Cuerpo: párrafos (con **negrita**) y medios de galería
+    // @video src="..." [thumb="..."] [desc="..."]
+    // @image src="..." [thumb="..."] [desc="..."]
+    const content = [];
+    let paragraph = [];
+    const flush = () => {
+        if (paragraph.length) {
+            content.push({ type: 'text', html: paragraph.map(l => inlineMarkdown(l)).join(' ') });
+            paragraph = [];
         }
+    };
 
-        const projectBySlug = {};
-        projectsData.forEach(p => { projectBySlug[slugify(p.title)] = p; });
+    const attrRe = /(\w+)="([^"]*)"/g;
+
+    body.split('\n').forEach(line => {
+        const mediaMatch = line.match(/^@(video|image)\b/);
+        if (mediaMatch) {
+            flush();
+            const attrs = {};
+            let m;
+            attrRe.lastIndex = 0;
+            while ((m = attrRe.exec(line)) !== null) attrs[m[1]] = m[2];
+            content.push({
+                type: mediaMatch[1],
+                src: attrs.src || '',
+                thumb: attrs.thumb || attrs.poster || '',
+                desc: attrs.desc || attrs.caption || ''
+            });
+        } else if (line.trim() === '') {
+            flush();
+        } else {
+            paragraph.push(line.trim());
+        }
+    });
+    flush();
+
+    return {
+        title: fm.title || 'Sin título',
+        category: fm.category || '',
+        date: fm.date || '',
+        image: fm.image || '',
+        tags,
+        content
+    };
+}
+
+function yearOf(project) {
+    const m = String(project.date).match(/\d{4}/);
+    return m ? Number(m[0]) : 0;
+}
+
+function renderProjectCard(project) {
+    const card = document.createElement('div');
+    card.className = 'project-card fade-in';
+    const chips = project.tags.slice(0, 3)
+        .map(t => `<span class="chip">${escapeHtml(t)}</span>`)
+        .join('');
+    const image = escapeHtml(project.image).replace(/"/g, '&quot;');
+    const title = escapeHtml(project.title);
+    card.innerHTML = `
+        <div class="project-image">
+            <img src="${image}" alt="${title}" loading="lazy">
+            <div class="project-overlay">
+                <div class="project-chips">${chips}</div>
+            </div>
+        </div>
+        <h3 class="project-title">${title}</h3>
+        <p class="project-category">${escapeHtml(project.date)} · ${escapeHtml(project.category)}</p>
+    `;
+    return card;
+}
+
+async function loadProjects() {
+    const projectsGrid = document.querySelector('.projects-grid');
+    try {
+        const projects = await Promise.all(
+            PROJECT_FILES.map(async file => {
+                const res = await fetch(file);
+                if (!res.ok) throw new Error(`HTTP ${res.status} al cargar ${file}`);
+                return parseProjectMarkdown(await res.text());
+            })
+        );
+        // Orden: más reciente primero
+        projects.sort((a, b) => yearOf(b) - yearOf(a));
+
+        projectsData = projects;
+        projectBySlug = {};
+        projects.forEach(p => { projectBySlug[slugify(p.title)] = p; });
+
+        const frag = document.createDocumentFragment();
+        projects.forEach(p => {
+            const card = renderProjectCard(p);
+            card.addEventListener('click', () => openModal(p));
+            frag.appendChild(card);
+        });
+        projectsGrid.innerHTML = '';
+        projectsGrid.appendChild(frag);
+        projectsGrid.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Compatibilidad: una URL con #project/<slug> sigue abriendo el proyecto
+        const match = location.hash.match(/^#project\/(.+)$/);
+        if (match && projectBySlug[match[1]]) openModal(projectBySlug[match[1]]);
+    } catch (err) {
+        console.error('No se pudieron cargar los proyectos:', err);
+    }
+}
+
+// Slug para enrutado por hash (botón "atrás" del navegador)
+function slugify(str) {
+    return str.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+}
 
         // Objetivo activo del scrollbar personalizado (se declara aquí para
         // que tanto el modal como el IIFE del scrollbar lo compartan)
@@ -251,6 +355,231 @@
         const modalTitle = document.getElementById('modalTitle');
         const modalDescription = document.getElementById('modalDescription');
         const modalTags = document.getElementById('modalTags');
+        // Visor a pantalla completa (galería)
+        const mediaViewer = document.getElementById('mediaViewer');
+        const viewerCarouselEl = document.getElementById('viewerCarousel');
+        const viewerDescription = document.getElementById('viewerDescription');
+        const viewerCounter = document.getElementById('viewerCounter');
+        const viewerClose = document.getElementById('viewerClose');
+        const viewerPrev = document.getElementById('viewerPrev');
+        const viewerNext = document.getElementById('viewerNext');
+        const viewerZoomBar = document.getElementById('viewerZoomBar');
+        const zoomInBtn = document.getElementById('zoomIn');
+        const zoomOutBtn = document.getElementById('zoomOut');
+        const zoomResetBtn = document.getElementById('zoomReset');
+
+        let gallerySwiper = null;
+        let viewerSwiper = null;
+        let currentMedia = [];
+
+        const PLAY_ICON = '<span class="gallery-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>';
+
+        function createVideoElement(item) {
+            const video = document.createElement('video');
+            video.controls = true;
+            video.playsInline = true;
+            video.loop = true;
+            video.muted = true;
+            video.preload = 'metadata';
+            if (item.thumb || item.poster) video.poster = item.thumb || item.poster;
+            const source = document.createElement('source');
+            source.src = item.src;
+            source.type = 'video/mp4';
+            video.appendChild(source);
+            return video;
+        }
+
+        // Galería: miniaturas 1:1 dentro del artículo
+        function buildGallery(mediaItems) {
+            const gallery = document.createElement('section');
+            gallery.className = 'article-gallery';
+
+            const title = document.createElement('h3');
+            title.className = 'article-gallery-title';
+            title.textContent = 'Galería';
+            gallery.appendChild(title);
+
+            const wrap = document.createElement('div');
+            wrap.className = 'swiper gallery-carousel';
+
+            const track = document.createElement('div');
+            track.className = 'swiper-wrapper';
+
+            mediaItems.forEach((item, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+
+                const thumb = document.createElement('button');
+                thumb.type = 'button';
+                thumb.className = 'gallery-thumb' + (item.type === 'video' ? ' gallery-thumb--video' : '');
+                thumb.setAttribute('aria-label', item.desc || 'Abrir en el visor');
+                thumb.addEventListener('click', () => openViewer(index));
+
+                if (item.type === 'image' || item.thumb) {
+                    const img = document.createElement('img');
+                    img.src = item.thumb || item.src;
+                    img.alt = item.desc || '';
+                    img.loading = 'lazy';
+                    img.draggable = false;
+                    thumb.appendChild(img);
+                } else {
+                    const video = document.createElement('video');
+                    video.preload = 'metadata';
+                    video.muted = true;
+                    video.playsInline = true;
+                    const source = document.createElement('source');
+                    source.src = item.src;
+                    source.type = 'video/mp4';
+                    video.appendChild(source);
+                    thumb.appendChild(video);
+                }
+                if (item.type === 'video') {
+                    thumb.insertAdjacentHTML('beforeend', PLAY_ICON);
+                }
+                slide.appendChild(thumb);
+                track.appendChild(slide);
+            });
+
+            wrap.appendChild(track);
+            gallery.appendChild(wrap);
+            return gallery;
+        }
+
+        function initGallerySwiper(el) {
+            if (gallerySwiper) { gallerySwiper.destroy(true, true); gallerySwiper = null; }
+            gallerySwiper = new Swiper(el, {
+                slidesPerView: 2.4,
+                spaceBetween: 12,
+                grabCursor: true,
+                breakpoints: {
+                    640: { slidesPerView: 3.5, spaceBetween: 16 },
+                    1024: { slidesPerView: 4.5, spaceBetween: 20 }
+                }
+            });
+        }
+
+        // Artículo: párrafos primero, galería al final
+        function renderArticle(project) {
+            modalDescription.innerHTML = '';
+            currentMedia = (project.content || []).filter(b => b.type === 'video' || b.type === 'image');
+            const textBlocks = (project.content || []).filter(b => b.type === 'text');
+
+            if (textBlocks.length) {
+                textBlocks.forEach(block => {
+                    const p = document.createElement('p');
+                    p.innerHTML = block.html;
+                    modalDescription.appendChild(p);
+                });
+            } else if (project.description) {
+                // Compatibilidad con el formato anterior (párrafos sin content)
+                modalDescription.innerHTML = project.description.map(p => `<p>${p}</p>`).join('');
+            }
+
+            if (currentMedia.length) {
+                const gallery = buildGallery(currentMedia);
+                modalDescription.appendChild(gallery);
+                initGallerySwiper(gallery.querySelector('.gallery-carousel'));
+            }
+        }
+
+        function clearVideos() {
+            modal.querySelectorAll('video').forEach(video => {
+                video.pause();
+                video.removeAttribute('src');
+                video.load();
+            });
+            if (mediaViewer) mediaViewer.querySelectorAll('video').forEach(video => {
+                video.pause();
+                video.removeAttribute('src');
+                video.load();
+            });
+        }
+
+        // ============================================
+        // Visor a pantalla completa (lightbox)
+        // ============================================
+        function createViewerSlide(item) {
+            const slide = document.createElement('div');
+            slide.className = 'swiper-slide';
+            if (item.type === 'image') {
+                const zoomBox = document.createElement('div');
+                zoomBox.className = 'swiper-zoom-container';
+                const img = document.createElement('img');
+                img.src = item.src;
+                img.alt = item.desc || '';
+                img.draggable = false;
+                zoomBox.appendChild(img);
+                slide.appendChild(zoomBox);
+            } else {
+                slide.appendChild(createVideoElement(item));
+            }
+            return slide;
+        }
+
+        function pauseViewerVideos() {
+            viewerCarouselEl.querySelectorAll('video').forEach(v => v.pause());
+        }
+
+        function playActiveVideo() {
+            if (!viewerSwiper) return;
+            const slide = viewerSwiper.slides[viewerSwiper.activeIndex];
+            if (!slide) return;
+            const video = slide.querySelector('video');
+            if (video) video.play().catch(() => {});
+        }
+
+        function updateViewerInfo() {
+            if (!viewerSwiper) return;
+            const item = currentMedia[viewerSwiper.realIndex];
+            viewerDescription.textContent = item ? item.desc : '';
+            viewerCounter.textContent = currentMedia.length ? `${viewerSwiper.realIndex + 1} / ${currentMedia.length}` : '';
+
+            const isImage = item && item.type === 'image';
+            viewerZoomBar.classList.toggle('hidden', !isImage);
+            if (viewerSwiper.zoom) {
+                if (isImage) viewerSwiper.zoom.enable(); else viewerSwiper.zoom.disable();
+            }
+            playActiveVideo();
+        }
+
+        function openViewer(index) {
+            if (!currentMedia.length || mediaViewer.classList.contains('open')) return;
+            const track = viewerCarouselEl.querySelector('.swiper-wrapper');
+            track.innerHTML = '';
+            currentMedia.forEach(item => track.appendChild(createViewerSlide(item)));
+
+            if (viewerSwiper) { viewerSwiper.destroy(true, true); viewerSwiper = null; }
+
+            viewerSwiper = new Swiper(viewerCarouselEl, {
+                initialSlide: index,
+                loop: currentMedia.length > 1,
+                keyboard: { enabled: true, onlyInViewport: false },
+                navigation: { prevEl: viewerPrev, nextEl: viewerNext },
+                zoom: { maxRatio: 4 },
+                on: {
+                    slideChangeTransitionStart: pauseViewerVideos,
+                    slideChangeTransitionEnd: updateViewerInfo
+                }
+            });
+
+            mediaViewer.classList.add('open');
+            document.body.classList.add('no-scroll');
+            updateViewerInfo();
+        }
+
+        function closeViewer() {
+            if (!mediaViewer.classList.contains('open')) return;
+            mediaViewer.classList.remove('open');
+            document.body.classList.remove('no-scroll');
+            pauseViewerVideos();
+            if (viewerSwiper) { viewerSwiper.destroy(true, true); viewerSwiper = null; }
+            viewerCarouselEl.querySelector('.swiper-wrapper').innerHTML = '';
+        }
+
+        viewerClose.addEventListener('click', closeViewer);
+        zoomInBtn.addEventListener('click', () => viewerSwiper && viewerSwiper.zoom && viewerSwiper.zoom.in());
+        zoomOutBtn.addEventListener('click', () => viewerSwiper && viewerSwiper.zoom && viewerSwiper.zoom.out());
+        zoomResetBtn.addEventListener('click', () => viewerSwiper && viewerSwiper.zoom && viewerSwiper.zoom.reset());
 
         function openModal(project) {
             const wasOpen = modal.classList.contains('open');
@@ -258,9 +587,7 @@
             modalImage.alt = project.title;
             modalCategory.textContent = project.date ? `${project.date} · ${project.category}` : project.category;
             modalTitle.textContent = project.title;
-            modalDescription.innerHTML = project.description
-                .map(p => `<p>${p}</p>`)
-                .join('');
+            renderArticle(project);
             modalTags.innerHTML = project.tags
                 .map(tag => `<span class="article-tag">${tag}</span>`)
                 .join('');
@@ -279,6 +606,9 @@
         function closeModal() {
             if (!modal.classList.contains('open')) return;
             modal.classList.remove('open');
+            closeViewer();
+            clearVideos();
+            if (gallerySwiper) { gallerySwiper.destroy(true, true); gallerySwiper = null; }
             scrollbarTarget = window;
             if (window.updateCustomScrollbar) requestAnimationFrame(window.updateCustomScrollbar);
         }
@@ -289,26 +619,18 @@
             if (history.state && history.state.modalOpen) history.back();
         }
 
-        document.querySelectorAll('.project-card').forEach((card, index) => {
-            card.addEventListener('click', () => openModal(projectsData[index]));
-        });
-
         modalClose.addEventListener('click', requestClose);
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('open')) requestClose();
+            if (e.key !== 'Escape') return;
+            if (mediaViewer.classList.contains('open')) closeViewer();
+            else if (modal.classList.contains('open')) requestClose();
         });
 
         // El botón "atrás" del móvil cierra el modal
         window.addEventListener('popstate', () => {
             if (modal.classList.contains('open')) closeModal();
         });
-
-        // Compatibilidad: una URL con #project/<slug> sigue abriendo el proyecto
-        (function initFromHash() {
-            const match = location.hash.match(/^#project\/(.+)$/);
-            if (match && projectBySlug[match[1]]) openModal(projectBySlug[match[1]]);
-        })();
 
         // ============================================
         // Scrollbar 100% personalizado (simulado)
@@ -515,3 +837,6 @@
 
             updateThumb();
         })();
+
+        // Cargar proyectos desde Markdown (asíncrono)
+        loadProjects();
