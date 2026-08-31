@@ -684,7 +684,7 @@
         }
 
         .accordion.open {
-            max-height: 500px;
+            max-height: 800px;
             opacity: 1;
         }
 
@@ -922,6 +922,11 @@
 
         .btn-whatsapp:hover {
             background-color: #1DA851;
+        }
+
+        .contact-actions {
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .social-links {

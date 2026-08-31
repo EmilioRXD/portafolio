@@ -193,7 +193,8 @@ let projectBySlug = {};
 const PROJECT_FILES = [
     "projects/project-01.md",
     "projects/project-02.md",
-    "projects/project-03.md"
+    "projects/project-03.md",
+    "projects/project-04.md"
 ];
 
 function escapeHtml(str) {

@@ -4,7 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EmilioR</title>
+    <title>Jesús Rodríguez — Desarrollador de Software Fullstack</title>
+    <meta name="description"
+        content="Desarrollador de software fullstack (Vue 3, React, PHP/Laravel). Aplicaciones web en producción, automatización de procesos y soluciones IoT. Contacto: emilior.com">
+    <meta property="og:title" content="Jesús Rodríguez — Desarrollador de Software Fullstack">
+    <meta property="og:description"
+        content="Aplicaciones web en producción y soluciones IoT. Frontend (Vue, React, Next.js), backend (PHP/Laravel) y bases de datos (MySQL).">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://emilior.com/">
+    <meta property="og:image" content="https://emilior.com/public/hero.jpg">
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
@@ -35,8 +43,8 @@
             <div class="nav-links">
                 <a href="#about">Sobre mí</a>
                 <a href="#experience">Experiencia</a>
-                <a href="#education">Educación</a>
                 <a href="#work">Proyectos</a>
+                <a href="#education">Educación</a>
                 <a href="#skills">Habilidades</a>
                 <a href="#support">Soporte</a>
                 <a href="#contact">Contacto</a>
@@ -51,8 +59,8 @@
         <div id="mobileMenu" class="mobile-menu">
             <a href="#about">Sobre mí</a>
             <a href="#experience">Experiencia</a>
-            <a href="#education">Educación</a>
             <a href="#work">Proyectos</a>
+            <a href="#education">Educación</a>
             <a href="#skills">Habilidades</a>
             <a href="#support">Soporte</a>
             <a href="#contact">Contacto</a>
@@ -66,7 +74,7 @@
             <div class="hero-overlay"></div>
         </div>
         <div class="hero-content">
-            <p class="subtitle fade-in">Arquitecto de Software & <span class="subtitle-break">Especialista en TI</span>
+            <p class="subtitle fade-in">Desarrollador de Software <span class="subtitle-break">Fullstack</span>
             </p>
             <h1 class="fade-in">Jesús Emilio Rodríguez Alfonzo</h1>
             <div class="btn-group fade-in">
@@ -82,13 +90,12 @@
             <div class="about-text-wrapper fade-in">
                 <h2>Sobre mí</h2>
                 <p class="about-text">
-                    Técnico Superior Universitario en Informática y Arquitecto de Software.
-                    Identifico cuellos de botella operativos y creo soluciones automatizadas que reducen
-                    costos y facilitan la toma de decisiones.
+                    Técnico Superior Universitario en Informática. Desarrollo y mantengo aplicaciones web en
+                    producción, enfocadas en automatizar tareas manuales y facilitar la toma de decisiones.
                 </p>
                 <p class="about-text">
-                    Combino desarrollo de sistemas con soporte técnico de infraestructura, redes y ofimática para
-                    garantizar la continuidad operativa.
+                    También brindo soporte técnico de infraestructura, redes y ofimática para garantizar la
+                    continuidad operativa.
                 </p>
             </div>
             <div class="about-photo fade-in">
@@ -128,10 +135,8 @@
                             ocasiones con entornos controlados.</li>
                         <li><strong>Calidad y agilidad:</strong> Revisé el código del equipo y participé activamente en
                             Scrum, con creación de tickets y gestión de historias de usuario.</li>
-                        <li><strong>IA en el flujo de trabajo:</strong> Impulsé mi productividad trabajando con agentes
-                            de IA (Claude Code y OpenCode).</li>
-                        <li><strong>Chatbot:</strong> Construí un chatbot funcional integrado en el software de la
-                            empresa.</li>
+                        <li><strong>Chatbot:</strong> Diseñé e integré un chatbot con IA sobre el backend en Laravel
+                            para automatizar respuestas frecuentes de atención al usuario.</li>
                     </ul>
                 </div>
                 <button class="accordion-toggle" aria-expanded="false">
@@ -180,25 +185,44 @@
                 <h3 class="job-title">Técnico Independiente</h3>
                 <p class="company-name">Servicios de Soporte Técnico y TI</p>
                 <span class="job-duration">2018 — Presente</span>
-                <p class="job-desc">Presto servicios de soporte técnico, mantenimiento de equipos, instalación y
-                    configuración de software, gestión de redes y conectividad, soporte remoto y ofimática, así como
-                    recuperación de datos y resguardo de información. Algunos de los trabajos realizados:</p>
-                <div class="swiper fade-in" id="freelanceCarousel">
-                    <div class="swiper-wrapper" id="freelanceTrack"></div>
-                    <button class="carousel-btn swiper-button-prev" id="carouselPrev" aria-label="Anterior">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" viewBox="0 0 24 24">
-                            <path d="M15 18l-6-6 6-6" />
-                        </svg>
-                    </button>
-                    <button class="carousel-btn swiper-button-next" id="carouselNext" aria-label="Siguiente">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" viewBox="0 0 24 24">
-                            <path d="M9 6l6 6-6 6" />
-                        </svg>
-                    </button>
+                <p class="job-desc">Soporte técnico independiente para particulares y oficinas: mantenimiento de
+                    equipos, redes y conectividad, software, soporte remoto y recuperación de datos.</p>
+                <div class="accordion">
+                    <div class="swiper fade-in" id="freelanceCarousel">
+                        <div class="swiper-wrapper" id="freelanceTrack"></div>
+                        <button class="carousel-btn swiper-button-prev" id="carouselPrev" aria-label="Anterior">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M15 18l-6-6 6-6" />
+                            </svg>
+                        </button>
+                        <button class="carousel-btn swiper-button-next" id="carouselNext" aria-label="Siguiente">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M9 6l6 6-6 6" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
+                <button class="accordion-toggle" aria-expanded="false">
+                    <span class="accordion-label">Ver trabajos</span>
+                    <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
             </div>
+        </div>
+    </section>
+
+    <!-- Sección Proyectos -->
+    <section id="work" class="section bg-gray">
+        <div class="container">
+            <div class="section-header fade-in">
+                <p class="subtitle">Trabajos Seleccionados</p>
+                <h2>Proyectos Recientes</h2>
+            </div>
+            <!-- Las tarjetas se generan desde /projects/*.md (script.js) -->
+            <div class="projects-grid"></div>
         </div>
     </section>
 
@@ -213,7 +237,7 @@
             <div class="experience-item fade-in">
                 <h3 class="job-title">Técnico Superior Universitario en Informática</h3>
                 <p class="company-name">Instituto Universitario de Tecnología de Administración Industrial (IUTA)</p>
-                <span class="job-duration">2023 — 2025</span>
+                <span class="job-duration">2022 — 2025</span>
                 <p class="job-desc">Graduado con Honores. Formación en análisis de sistemas, optimización de procesos y
                     redes informáticas.</p>
             </div>
@@ -225,25 +249,6 @@
                 <p class="job-desc">Aplicación práctica de la IA Generativa en el desarrollo de soluciones y la
                     automatización de procesos.</p>
             </div>
-            <!-- Estudio 3 -->
-            <div class="experience-item fade-in">
-                <h3 class="job-title">Curso Básico de Programación</h3>
-                <p class="company-name">Platzi</p>
-                <span class="job-duration">diciembre 2021</span>
-                <p class="job-desc">Fundamentos de programación: lógica, variables y estructuras de control.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Proyectos -->
-    <section id="work" class="section bg-gray">
-        <div class="container">
-            <div class="section-header fade-in">
-                <p class="subtitle">Trabajos Seleccionados</p>
-                <h2>Proyectos Recientes</h2>
-            </div>
-            <!-- Las tarjetas se generan desde /projects/*.md (script.js) -->
-            <div class="projects-grid"></div>
         </div>
     </section>
 
@@ -268,42 +273,40 @@
                     Habilidades Técnicas
                 </h3>
                 <div class="skill-chips">
-                    <span class="skill-chip">TypeScript</span>
                     <span class="skill-chip">JavaScript</span>
+                    <span class="skill-chip">TypeScript</span>
                     <span class="skill-chip">React.js</span>
+                    <span class="skill-chip">Next.js</span>
                     <span class="skill-chip">Vue.js</span>
                     <span class="skill-chip">Node.js</span>
                     <span class="skill-chip">PHP</span>
-                    <span class="skill-chip">PostgreSQL</span>
+                    <span class="skill-chip">Laravel</span>
                     <span class="skill-chip">MySQL</span>
-                    <span class="skill-chip">Docker</span>
                     <span class="skill-chip">Linux</span>
-                    <span class="skill-chip">Inteligencia Artificial (LLMs)</span>
+                    <span class="skill-chip">C</span>
                     <span class="skill-chip">IoT / MQTT</span>
+                    <span class="skill-chip">Integración de APIs de IA</span>
                 </div>
             </div>
-            <!-- Habilidades Blandas -->
+            <!-- Herramientas -->
             <div class="skill-block fade-in">
                 <h3 class="skill-block-title">
                     <span class="skill-icon skill-icon--alt">
                         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" viewBox="0 0 24 24">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                            <path d="M16 3.128a4 4 0 0 1 0 7.744" />
-                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                            <circle cx="9" cy="7" r="4" />
+                            <path
+                                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
                         </svg>
                     </span>
-                    Habilidades Blandas
+                    Herramientas
                 </h3>
-                <ul class="soft-list">
-                    <li>Comunicación asertiva interdepartamental</li>
-                    <li>Análisis y resolución de problemas</li>
-                    <li>Trabajo en equipos multidisciplinarios</li>
-                    <li>Adaptación al cambio</li>
-                    <li>Redacción de documentación técnica</li>
-                    <li>Orientación al soporte y atención al usuario</li>
-                </ul>
+                <div class="skill-chips">
+                    <span class="skill-chip">Git</span>
+                    <span class="skill-chip">Figma</span>
+                    <span class="skill-chip">Scrum</span>
+                    <span class="skill-chip">Taiga / Trello</span>
+                    <span class="skill-chip">Soporte técnico y redes</span>
+                </div>
             </div>
         </div>
     </section>
@@ -402,15 +405,25 @@
                 Estoy disponible para nuevos proyectos, colaboraciones o simplemente una buena charla
                 técnica.
             </p>
-            <a href="https://wa.me/584123872693?text=Hola%20Emilio%2C%20vi%20tu%20portafolio%20y%20quiero%20conversar%20contigo."
-                target="_blank" rel="noopener" class="btn btn-primary btn-whatsapp">
-                <svg style="width: 1.1rem; height: 1.1rem; margin-right: 0.5rem;" fill="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                </svg>
-                Escríbeme por WhatsApp
-            </a>
+            <div class="btn-group contact-actions">
+                <a href="mailto:contacto@emilior.com" class="btn btn-primary">
+                    <svg style="width: 1.1rem; height: 1.1rem; margin-right: 0.5rem;" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                    contacto@emilior.com
+                </a>
+                <a href="https://wa.me/584123872693?text=Hola%20Emilio%2C%20vi%20tu%20portafolio%20y%20quiero%20conversar%20contigo."
+                    target="_blank" rel="noopener" class="btn btn-primary btn-whatsapp">
+                    <svg style="width: 1.1rem; height: 1.1rem; margin-right: 0.5rem;" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    +58 412 3872693
+                </a>
+            </div>
         </div>
     </section>
 
@@ -444,8 +457,7 @@
         <div class="media-viewer__main">
             <button id="viewerClose" class="media-viewer__close" aria-label="Cerrar visor">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
             <div class="media-viewer__zoom" id="viewerZoomBar">
@@ -471,14 +483,14 @@
                 <div class="swiper-wrapper"></div>
             </div>
             <button id="viewerPrev" class="media-viewer__nav media-viewer__nav--prev" aria-label="Anterior">
-                <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" viewBox="0 0 24 24">
+                <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    viewBox="0 0 24 24">
                     <path d="M15 18l-6-6 6-6" />
                 </svg>
             </button>
             <button id="viewerNext" class="media-viewer__nav media-viewer__nav--next" aria-label="Siguiente">
-                <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" viewBox="0 0 24 24">
+                <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    viewBox="0 0 24 24">
                     <path d="M9 6l6 6-6 6" />
                 </svg>
             </button>
@@ -494,7 +506,7 @@
     <footer class="footer">
         <div class="footer-content">
             <p>Jesús Emilio Rodríguez Alfonzo. Todos los derechos reservados.</p>
-            <p>Desarrollado con pasión desde Venezuela</p>
+            <p>Desarrollado desde Venezuela</p>
         </div>
     </footer>
 
